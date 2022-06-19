@@ -6,15 +6,14 @@ import java.util.List;
 import main.domain.Recibo;
 
 public class Cliente {
-	
+
 	private Categoria categoria;
 	private List<Recibo> recibos;
-	
+
 	private double precoMensalidade;
 	private String nome;
 	private String senha;
-	
-		
+
 	public Cliente(Categoria categoria) {
 		this.setCategoria(categoria);
 		this.setPrecoMensalidade(this.categoria.getValor());
@@ -25,12 +24,12 @@ public class Cliente {
 		this.categoria = categoria;
 		this.setPrecoMensalidade(this.categoria.getValor());
 	}
-	
+
 	public Categoria getCategoria() {
 		return this.categoria;
 	}
-	
-	public List<Recibo> getRecibos(){
+
+	public List<Recibo> getRecibos() {
 		return this.recibos;
 	}
 
@@ -41,11 +40,11 @@ public class Cliente {
 	public void setPrecoMensalidade(double precoMensalidade) {
 		this.precoMensalidade = precoMensalidade;
 	}
-	
+
 	public boolean comprar(Recibo recibo, double valorAPagar) {
 		double precoRecibo = recibo.getValor();
 		double total = valorAPagar;
-		if(precoRecibo * (1 - this.categoria.pctDesconto()) <= valorAPagar ) {
+		if (precoRecibo * (1 - this.categoria.pctDesconto()) <= valorAPagar) {
 			this.recibos.add(recibo);
 			total = recibo.getValor();
 		}
@@ -54,9 +53,9 @@ public class Cliente {
 
 	public String gerarHistorico() {
 		StringBuilder sb = new StringBuilder();
-			
+
 		this.recibos.stream()
-				.forEach(r ->{
+				.forEach(r -> {
 					sb.append("Recibo: \n");
 					sb.append("-------------");
 					sb.append(r.toString());
