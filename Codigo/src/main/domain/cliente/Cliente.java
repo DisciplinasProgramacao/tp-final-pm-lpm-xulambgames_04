@@ -1,12 +1,13 @@
 package main.domain.cliente;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 import main.domain.Recibo;
 
-public class Cliente {
-
+public class Cliente implements Serializableble {
+	private static final long serialVersionUID = 1L;
 	private Categoria categoria;
 	private List<Recibo> recibos;
 
