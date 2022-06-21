@@ -9,8 +9,9 @@ import java.util.stream.Collectors;
 import main.domain.Recibo;
 import main.domain.jogo.Jogo;
 
-public class Cliente implements Serializableble {
+public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 	private Categoria categoria;
 	private List<Recibo> recibos;
 
@@ -20,6 +21,7 @@ public class Cliente implements Serializableble {
 
 	/**
 	 * Contrutor de Cliente
+	 * 
 	 * @param categoria - Categoria do cliente (Cadastrado, Empolgado, Fanatico)
 	 */
 	public Cliente(Categoria categoria) {
@@ -29,11 +31,23 @@ public class Cliente implements Serializableble {
 
 	/**
 	 * Altera categoria e muda preco da mensalidade
+	 * 
 	 * @param categoria
 	 */
+	public Cliente(Categoria categoria, String nome) {
+		this.nome = nome;
+		this.setCategoria(categoria);
+		this.setPrecoMensalidade(this.categoria.mensalidade());
+		this.recibos = new LinkedList<Recibo>();
+	}
+
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 		this.setPrecoMensalidade(this.categoria.mensalidade());
+	}
+
+	public String getNome() {
+		return this.nome;
 	}
 
 	public Categoria getCategoria() {
@@ -50,6 +64,7 @@ public class Cliente implements Serializableble {
 
 	/**
 	 * (?) Mudar pra protected ou private
+	 * 
 	 * @param precoMensalidade
 	 */
 	private void setPrecoMensalidade(double precoMensalidade) {
@@ -58,9 +73,9 @@ public class Cliente implements Serializableble {
 
 	/**
 	 * 
-	 * @param recibo - 
+	 * @param recibo      -
 	 * @param valorAPagar -
-	 * @return - 
+	 * @return -
 	 */
 	public boolean comprar(Recibo recibo, double valorAPagar) {
 		double precoRecibo = recibo.getValor();
@@ -71,11 +86,12 @@ public class Cliente implements Serializableble {
 		}
 		return recibo.pagar(total, valorAPagar);
 	}
-	
-    /**
-     * Relatório do historico de compras/recibos.
-     * @return String com detalhamento do historico. 
-     */
+
+	/**
+	 * Relatório do historico de compras/recibos.
+	 * 
+	 * @return String com detalhamento do historico.
+	 */
 	private String relatorio(List<Recibo> compras) {
 		StringBuilder sb = new StringBuilder();
 
@@ -88,27 +104,29 @@ public class Cliente implements Serializableble {
 				});
 		return sb.toString();
 	}
-	
+
 	public String historico() {
 		return relatorio(this.recibos);
 	}
-	
+
 	public String historicoPorJogo(Jogo jogo) {
-		List<Recibo> historico = this.recibos.stream().filter(r -> r.getJogos().contains(jogo)).collect(Collectors.toList());
-		if(historico.size() == 0) {
+		List<Recibo> historico = this.recibos.stream().filter(r -> r.getJogos().contains(jogo))
+				.collect(Collectors.toList());
+		if (historico.size() == 0) {
 			return "Voce ainda nao comprou o jogo '" + jogo.getNome() + "'";
 		}
 		return relatorio(historico);
 	}
-	
-//	public String historicoPorCategoria() {
-//		List<Recibo> historico = this.recibos.stream().filter(r -> r.getJogos().contains(jogo)).collect(Collectors.toList());
-//		return relatorio(historico);
-//	}
-	
+
+	// public String historicoPorCategoria() {
+	// List<Recibo> historico = this.recibos.stream().filter(r ->
+	// r.getJogos().contains(jogo)).collect(Collectors.toList());
+	// return relatorio(historico);
+	// }
+
 	public String historicoPorData(LocalDate data) {
 		List<Recibo> historico = this.recibos.stream().filter(r -> r.getData() == data).collect(Collectors.toList());
-		if(historico.size() == 0) {
+		if (historico.size() == 0) {
 			return "Voce nao realizou nenhuma compra no dia " + data;
 		}
 		return relatorio(historico);

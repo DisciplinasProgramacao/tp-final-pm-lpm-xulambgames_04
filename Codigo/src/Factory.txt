@@ -1,0 +1,4 @@
+Lancamento;main.domain.jogo.factory.FabricaLancamento
+Premium;main.domain.jogo.factory.FabricaPremium
+Promocional;main.domain.jogo.factory.FabricaPromocional
+Regular;main.domain.jogo.factory.FabricaRegular
