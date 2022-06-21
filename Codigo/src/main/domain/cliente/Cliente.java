@@ -15,15 +15,22 @@ public class Cliente implements Serializableble {
 	private String nome;
 	private String senha;
 
+	/**
+	 * Contrutor de Cliente
+	 * @param categoria - Categoria do cliente (Cadastrado, Empolgado, Fanatico)
+	 */
 	public Cliente(Categoria categoria) {
 		this.setCategoria(categoria);
-		this.setPrecoMensalidade(this.categoria.getValor());
 		this.recibos = new LinkedList<Recibo>();
 	}
 
+	/**
+	 * Altera categoria e muda preco da mensalidade
+	 * @param categoria
+	 */
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
-		this.setPrecoMensalidade(this.categoria.getValor());
+		this.setPrecoMensalidade(this.categoria.mensalidade());
 	}
 
 	public Categoria getCategoria() {
@@ -38,10 +45,20 @@ public class Cliente implements Serializableble {
 		return this.precoMensalidade;
 	}
 
-	public void setPrecoMensalidade(double precoMensalidade) {
+	/**
+	 * (?) Mudar pra protected ou private
+	 * @param precoMensalidade
+	 */
+	private void setPrecoMensalidade(double precoMensalidade) {
 		this.precoMensalidade = precoMensalidade;
 	}
 
+	/**
+	 * 
+	 * @param recibo - 
+	 * @param valorAPagar -
+	 * @return - 
+	 */
 	public boolean comprar(Recibo recibo, double valorAPagar) {
 		double precoRecibo = recibo.getValor();
 		double total = valorAPagar;
@@ -51,7 +68,11 @@ public class Cliente implements Serializableble {
 		}
 		return recibo.pagar(total, valorAPagar);
 	}
-
+	
+    /**
+     * Relatório do historico de compras/recibos.
+     * @return String com detalhamento do historico. 
+     */
 	public String gerarHistorico() {
 		StringBuilder sb = new StringBuilder();
 
@@ -64,5 +85,4 @@ public class Cliente implements Serializableble {
 				});
 		return sb.toString();
 	}
-
 }

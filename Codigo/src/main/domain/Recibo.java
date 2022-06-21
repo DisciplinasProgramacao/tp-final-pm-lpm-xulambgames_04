@@ -15,6 +15,12 @@ public class Recibo implements Serializable {
 	private boolean pago;
 	private double valorPago;
 
+	// Adicionar init
+    /**
+     * Construtor com somente um jogo
+     * @param data Data da compra
+     * @param jogo Jogo comprado
+     */
 	public Recibo(LocalDate data, Jogo jogo) {
 		this.jogos = new LinkedList<>();
 		this.addJogo(jogo);
@@ -24,6 +30,11 @@ public class Recibo implements Serializable {
 		this.valorPago = 0;
 	}
 
+    /**
+     * Construtor com mais de um jogo
+     * @param data Data da compra
+     * @param jogos Jogos comprados
+     */
 	public Recibo(LocalDate data, List<Jogo> jogos) {
 		this.data = data;
 		this.jogos = new LinkedList<>();
@@ -33,6 +44,10 @@ public class Recibo implements Serializable {
 		this.valorPago = 0;
 	}
 
+    /**
+     * Construtor com nenhum jogo
+     * @param data Data da compra
+     */
 	public Recibo(LocalDate data) {
 		this.jogos = new LinkedList<>();
 		this.data = data;
@@ -42,10 +57,16 @@ public class Recibo implements Serializable {
 		this.valorPago = 0;
 	}
 
-	public boolean isPago() {
+	public boolean verificarPagamento() {
 		return this.pago;
 	}
 
+	/**
+	 * 
+	 * @param valorAPagar
+	 * @param valorPago
+	 * @return
+	 */
 	public boolean pagar(double valorAPagar, double valorPago) {
 		this.setValorTotal();
 		if (this.valorTotal <= valorAPagar) {
@@ -60,11 +81,19 @@ public class Recibo implements Serializable {
 		this.valorTotal = calcularValorTotal();
 	}
 
+    /**
+     * Adicionar jogo e somar o valor
+     * @param jogo Jogo a ser adicionado
+     */
 	public void addJogo(Jogo jogo) {
 		this.jogos.add(jogo);
 		this.setValorTotal();
 	}
 
+    /**
+     * Adicionar um ou mais jogos e somar o valor 
+     * @param jogos Jogos a serem adicionados
+     */
 	public void addJogos(List<Jogo> jogos) {
 		this.jogos.addAll(jogos);
 		this.setValorTotal();
@@ -74,11 +103,19 @@ public class Recibo implements Serializable {
 		return this.jogos;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public double getValor() {
-		setValorTotal();
+		this.setValorTotal();
 		return this.valorTotal;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public double calcularValorTotal() {
 		this.valorOriginal = 0;
 		jogos.stream()
@@ -87,6 +124,12 @@ public class Recibo implements Serializable {
 		return this.valorOriginal * (1 - calcularDesconto());
 	}
 
+	/**
+	 * Calcular quantidade de desconto nos jogos comprados
+	 * @return valor de desconto da compra inteira
+	 */
+	// Add jogo + soma 
+	// so condicional
 	public double calcularDesconto() {
 		long qtdPromocionais = jogos.stream()
 				.filter(j -> j.getClass().getSimpleName().equals("Promocional"))
@@ -117,9 +160,12 @@ public class Recibo implements Serializable {
 		return 0;
 
 	}
-
-	@Override
-	public String toString() {
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String relatorio() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\nData: " + this.data + "\n");
@@ -133,5 +179,10 @@ public class Recibo implements Serializable {
 		sb.append("\nValor Total: " + this.valorTotal);
 		sb.append("\nValor Pago: " + this.valorPago);
 		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		return this.relatorio();
 	}
 }
