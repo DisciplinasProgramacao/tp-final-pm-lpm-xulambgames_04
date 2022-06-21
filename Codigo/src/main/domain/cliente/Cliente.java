@@ -1,10 +1,13 @@
 package main.domain.cliente;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import main.domain.Recibo;
+import main.domain.jogo.Jogo;
 
 public class Cliente implements Serializableble {
 	private static final long serialVersionUID = 1L;
@@ -73,10 +76,10 @@ public class Cliente implements Serializableble {
      * Relatório do historico de compras/recibos.
      * @return String com detalhamento do historico. 
      */
-	public String gerarHistorico() {
+	private String relatorio(List<Recibo> compras) {
 		StringBuilder sb = new StringBuilder();
 
-		this.recibos.stream()
+		compras.stream()
 				.forEach(r -> {
 					sb.append("Recibo: \n");
 					sb.append("-------------");
@@ -84,5 +87,24 @@ public class Cliente implements Serializableble {
 					sb.append("\n-------------");
 				});
 		return sb.toString();
+	}
+	
+	public String gerarHistorico() {
+		return relatorio(this.recibos);
+	}
+	
+	public String historicoPorJogo(Jogo jogo) {
+		List<Recibo> historico = this.recibos.stream().filter(r -> r.getJogos().contains(jogo)).collect(Collectors.toList());
+		return relatorio(historico);
+	}
+	
+//	public String historicoPorCategoria() {
+//		List<Recibo> historico = this.recibos.stream().filter(r -> r.getJogos().contains(jogo)).collect(Collectors.toList());
+//		return relatorio(historico);
+//	}
+	
+	public String historicoPorData(LocalDate data) {
+		List<Recibo> historico = this.recibos.stream().filter(r -> r.getData() == data).collect(Collectors.toList());
+		return relatorio(historico);
 	}
 }

@@ -107,15 +107,16 @@ public class Recibo implements Serializable {
 		return this.jogos;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public double getValor() {
 		this.setValorTotal();
 		return this.valorTotal;
 	}
 
+	
+	public LocalDate getData() {
+		return this.data;
+	}
+	
 	/**
 	 * 
 	 * @return
