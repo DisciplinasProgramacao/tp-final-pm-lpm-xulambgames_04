@@ -15,19 +15,27 @@ public class Recibo implements Serializable {
 	private boolean pago;
 	private double valorPago;
 
-	// Adicionar init
+    /**
+     * Iniciacao do construtor
+     * @param data Data da compra
+     */
+	public void init(LocalDate data) {
+		this.jogos = new LinkedList<>();
+		this.pago = false;
+		this.valorOriginal = 0;
+		this.valorPago = 0;
+		this.data = data;
+	}
+	
     /**
      * Construtor com somente um jogo
      * @param data Data da compra
      * @param jogo Jogo comprado
      */
 	public Recibo(LocalDate data, Jogo jogo) {
-		this.jogos = new LinkedList<>();
 		this.addJogo(jogo);
-		this.pago = false;
-		this.valorOriginal = 0;
 		calcularValorTotal();
-		this.valorPago = 0;
+		init(data);
 	}
 
     /**
@@ -36,12 +44,10 @@ public class Recibo implements Serializable {
      * @param jogos Jogos comprados
      */
 	public Recibo(LocalDate data, List<Jogo> jogos) {
-		this.data = data;
 		this.jogos = new LinkedList<>();
 		this.jogos.addAll(jogos);
-		this.pago = false;
 		calcularValorTotal();
-		this.valorPago = 0;
+		init(data);
 	}
 
     /**
@@ -49,12 +55,10 @@ public class Recibo implements Serializable {
      * @param data Data da compra
      */
 	public Recibo(LocalDate data) {
-		this.jogos = new LinkedList<>();
-		this.data = data;
 		this.valorTotal = 0;
 		this.valorOriginal = 0;
-		this.pago = false;
 		this.valorPago = 0;
+		init(data);
 	}
 
 	public boolean verificarPagamento() {
