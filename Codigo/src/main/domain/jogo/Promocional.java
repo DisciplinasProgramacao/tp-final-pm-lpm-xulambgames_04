@@ -1,9 +1,9 @@
 package main.domain.jogo;
 
 public class Promocional extends Jogo implements IDesconto{
-	
-	public static final double PCT_DESCONTO_MIN = 0.50;
-	public static final double PCT_DESCONTO_MAX = 0.70;
+	// Vendidos por um valor entre 30 e 50% do preço original
+	public static final double PCT_DESCONTO_MIN = 0.50; // 50% do valor total
+	public static final double PCT_DESCONTO_MAX = 0.70; // 70% do valor total
 	
 	private double pctDesconto;
 	private double precoOriginal;

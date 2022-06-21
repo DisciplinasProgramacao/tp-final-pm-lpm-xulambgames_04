@@ -1,7 +1,7 @@
 package main.domain.jogo;
 
 public class Regular extends Jogo implements IDesconto{
-	
+	// Vendidos por um valor entre 70 e 100% do preço original
 	public static final double PCT_DESCONTO_MAX = 0.3;
 	
 	private double desconto;
@@ -11,7 +11,7 @@ public class Regular extends Jogo implements IDesconto{
 		this.desconto = 0;
 		this.nome = nome;
 		this.precoOriginal = valor;
-		this.preco = calcularPreco(valor);;
+		this.preco = calcularPreco(valor);
 	}
 	
 

@@ -1,6 +1,7 @@
 package main.domain.jogo;
 
 public class Lancamento extends Jogo implements IAdicional{
+	// Lançamentos Vendidos com adicional de 10% ao preço original
 	public static final double PCT_ADICIONAL = 0.10;
 	
 	private double precoOriginal;
@@ -8,8 +9,7 @@ public class Lancamento extends Jogo implements IAdicional{
 	public Lancamento(String nome, double valor) {
 		this.nome = nome;
 		this.precoOriginal = valor;
-		this.preco = calcularPreco(this.precoOriginal);;
-		
+		this.preco = calcularPreco(this.precoOriginal);
 	}
 
 	@Override
@@ -21,5 +21,4 @@ public class Lancamento extends Jogo implements IAdicional{
 	public double calcularAdicional() {
 		return this.precoOriginal * PCT_ADICIONAL;
 	}
-
 }
