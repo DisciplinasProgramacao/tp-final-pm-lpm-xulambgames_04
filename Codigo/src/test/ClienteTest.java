@@ -139,7 +139,7 @@ public class ClienteTest {
 		
 		sb.append("Recibo: \n"
 				+ "-------------\n"
-				+ "Data: 2022-06-17\n"
+				+ "Data: " + LocalDate.now() + "\n"
 				+ "\r\n"
 				+ "Titulos: \n"
 				+ "==========\n"
@@ -156,6 +156,6 @@ public class ClienteTest {
 		recibo.addJogo(jogoPremium2);
 		fanatico.comprar(recibo, 189);
 		
-		assertEquals(sb,fanatico.gerarHistorico());
+		assertEquals(sb,fanatico.historicoPorData(LocalDate.now()));
 	}
 }

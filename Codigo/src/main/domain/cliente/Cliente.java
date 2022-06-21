@@ -89,12 +89,15 @@ public class Cliente implements Serializableble {
 		return sb.toString();
 	}
 	
-	public String gerarHistorico() {
+	public String historico() {
 		return relatorio(this.recibos);
 	}
 	
 	public String historicoPorJogo(Jogo jogo) {
 		List<Recibo> historico = this.recibos.stream().filter(r -> r.getJogos().contains(jogo)).collect(Collectors.toList());
+		if(historico.size() == 0) {
+			return "Voce ainda nao comprou o jogo '" + jogo.getNome() + "'";
+		}
 		return relatorio(historico);
 	}
 	
@@ -105,6 +108,9 @@ public class Cliente implements Serializableble {
 	
 	public String historicoPorData(LocalDate data) {
 		List<Recibo> historico = this.recibos.stream().filter(r -> r.getData() == data).collect(Collectors.toList());
+		if(historico.size() == 0) {
+			return "Voce nao realizou nenhuma compra no dia " + data;
+		}
 		return relatorio(historico);
 	}
 }
