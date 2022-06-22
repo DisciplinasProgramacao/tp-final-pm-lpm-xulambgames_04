@@ -7,22 +7,26 @@ import java.util.Optional;
 import main.domain.jogo.Jogo;
 
 public class FabricaJogosCollection {
-	private HashMap<String, IFabricaJogos> games;
+	private HashMap<String, IFabricaJogos> gamesFactory;
 
 	public FabricaJogosCollection() {
-		games = new HashMap<>();
+		gamesFactory = new HashMap<>();
 	}
 
 	public void addFactory(String key, IFabricaJogos factory) {
 		if (key != "" && factory != null)
-			this.games.put(key.toLowerCase(), factory);
+			this.gamesFactory.put(key.toLowerCase(), factory);
 	}
 
 	public Jogo create(String key) {
 		Optional<IFabricaJogos> factory = Optional.ofNullable(
-				games.get(key.toLowerCase()));
+				gamesFactory.get(key.toLowerCase()));
 
 		return factory.map(IFabricaJogos::criar)
 				.orElseThrow(InvalidParameterException::new);
+	}
+
+	public void toString1() {
+		gamesFactory.values().stream().forEach(g -> System.out.println(g.getClass().getName()));
 	}
 }

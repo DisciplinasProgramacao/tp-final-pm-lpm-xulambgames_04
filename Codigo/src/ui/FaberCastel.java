@@ -66,9 +66,13 @@ public class FaberCastel {
 
 	public static String inGreen(String text) {
 		StringBuilder sb = new StringBuilder();
-
 		sb.append(GREEN + text + RESET);
-
+		return sb.toString();
+	}
+	
+	public static String inColor(String text, UiColors color) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(color.colorize() + text + RESET);
 		return sb.toString();
 	}
 }

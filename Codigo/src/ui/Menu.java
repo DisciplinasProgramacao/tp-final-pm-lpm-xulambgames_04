@@ -1,6 +1,9 @@
 package ui;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class Menu {
 	private String name;
@@ -65,7 +68,7 @@ public class Menu {
 		sb.append(Header());
 		sb.append(options());
 
-		printer(sb.toString());
+		System.out.println(stringer(sb.toString()));
 	}
 
 	public void subMenu() {
@@ -73,14 +76,48 @@ public class Menu {
 		clearScreen();
 		sb.append(Header());
 
-		printer(sb.toString());
+		System.out.println(stringer(sb.toString()));
 
 	}
 
-	private void printer(String text) {
-		if (this.wColor) {
-			System.out.println(FaberCastel.colorize(text));
-		} else
-			System.out.println(text);
+	public static int optionHandler(String input, List<Integer> validOptions) {
+		Integer opt;
+		try {
+			opt = Integer.valueOf(input);
+		} catch (Exception e) {
+			opt = 0;
+		}
+		if (!validOptions.contains(opt)) {
+			return 0;
+		}
+		return opt;
+	}
+
+	public static Double optionHandler(String input) {
+		double opt;
+		try {
+			opt = Double.valueOf(input);
+		} catch (Exception e) {
+			System.out.println(Menu.stringer("\n!! Valor não aceito !!\n"));
+			return -1.0;
+		}
+		return opt;
+	}
+
+	public static String stringer(String string) {
+		return wColor ? FaberCastel.colorize(string) : string;
+	}
+
+	public static String stringer(String string, UiColors color) {
+		return wColor ? FaberCastel.inColor(string, color) : string;
+	}
+
+	public static void pausaTeclado(Scanner input) {
+		System.out.println(stringer("\nPressione qualquer tecla para continuar"));
+		try {
+			input.nextLine();
+		} catch (NoSuchElementException e) {
+			return;
+		}
 	}
 }
