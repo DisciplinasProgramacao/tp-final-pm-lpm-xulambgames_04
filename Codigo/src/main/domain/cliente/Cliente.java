@@ -2,9 +2,11 @@ package main.domain.cliente;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import main.domain.Recibo;
 import main.domain.jogo.Jogo;
@@ -118,11 +120,19 @@ public class Cliente implements Serializable {
 		return relatorio(historico);
 	}
 
-	// public String historicoPorCategoria() {
-	// List<Recibo> historico = this.recibos.stream().filter(r ->
-	// r.getJogos().contains(jogo)).collect(Collectors.toList());
-	// return relatorio(historico);
-	// }
+	public <T> String historicoPorCategoria(Class<T> categoria) {
+		List<Recibo> rbs = new ArrayList<>();
+
+		for (Recibo r : recibos) {
+			List<Jogo> lista = r.getJogos().stream()
+					.filter(j -> j.getClass().equals(categoria.getClass()))
+					.collect(Collectors.toList());
+			if (lista.size() > 0) {
+				rbs.add(r);
+			}
+		}
+		return relatorio(rbs);
+	}
 
 	public String historicoPorData(LocalDate data) {
 		List<Recibo> historico = this.recibos.stream().filter(r -> r.getData() == data).collect(Collectors.toList());

@@ -12,22 +12,29 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.Set;
 
 import main.domain.cliente.Categoria;
 import main.domain.cliente.Cliente;
 import main.domain.jogo.Jogo;
+import main.domain.jogo.Lancamento;
+import main.domain.jogo.Premium;
+import main.domain.jogo.Promocional;
+import main.domain.jogo.Regular;
 import main.domain.jogo.factory.FabricaJogosCollection;
 import main.domain.jogo.factory.IFabricaJogos;
 import ui.FaberCastel;
 import ui.Menu;
 
+//Cliente comprar o jogo
+//Filtros dentro do switch do cliente -> métodos prontos
+//Listar jogos mais vendidos
+//Jogos menos vendidos
+//Valor médio no mês
 public class XulambsGames {
 
 	static Menu menu = new Menu("XulambsGames", "Welcome");
@@ -38,6 +45,7 @@ public class XulambsGames {
 	static Menu clientGamesFilterMenu = new Menu("Clientes", "Menu");
 	static Menu clientRegisterMenu = new Menu("Clientes", "Planos");
 	static Menu administratorMenu = new Menu("Administração", "-------");
+	static Menu clientHistoricoPorJogoMenu = new Menu("Clientes", "Tipos de jogos");
 
 	static FabricaJogosCollection todasAsFabricas;
 
@@ -53,9 +61,10 @@ public class XulambsGames {
 		HashMap<Integer, String> clientsLoginOptions = new HashMap<>();
 		HashMap<Integer, String> clientsOptions = new HashMap<>();
 		HashMap<Integer, String> administradorOptions = new HashMap<>();
-		HashMap<Integer, String> clientsGamesFilterOptions = new HashMap<>();
 		HashMap<Integer, String> clientRegisterOptions = new HashMap<>();
 		HashMap<Integer, String> gamesRegisterOptions = new HashMap<>();
+		HashMap<Integer, String> clientGamesFilterOptions = new HashMap<>();
+		HashMap<Integer, String> clientGamesHistoryOptions = new HashMap<>();
 
 		boolean color = false;
 		Scanner input = new Scanner(System.in);
@@ -82,11 +91,11 @@ public class XulambsGames {
 		administradorOptions.put(6, "Catálogo de Jogos");
 		administradorOptions.put(0, "Voltar");
 
-		clientsGamesFilterOptions.put(1, "Historico de compras");
-		clientsGamesFilterOptions.put(2, "Historico por jogo");
-		clientsGamesFilterOptions.put(3, "Historico por data");
-		clientsGamesFilterOptions.put(4, "Historico por categoria");
-		clientsGamesFilterOptions.put(0, "Voltar");
+		clientGamesFilterOptions.put(1, "Historico de compras");
+		clientGamesFilterOptions.put(2, "Historico por jogo");
+		clientGamesFilterOptions.put(3, "Historico por data");
+		clientGamesFilterOptions.put(4, "Historico por categoria");
+		clientGamesFilterOptions.put(0, "Voltar");
 
 		clientRegisterOptions.put(1, "Empolgado");
 		clientRegisterOptions.put(2, "Cadastrado");
@@ -98,13 +107,20 @@ public class XulambsGames {
 		gamesRegisterOptions.put(4, "Premium *-*");
 		gamesRegisterOptions.put(0, "Voltar");
 
+		clientGamesHistoryOptions.put(1, "Lancamento");
+		clientGamesHistoryOptions.put(2, "Regular");
+		clientGamesHistoryOptions.put(3, "Promocional");
+		clientGamesHistoryOptions.put(4, "Premium *-*");
+		clientGamesHistoryOptions.put(0, "Voltar");
+
 		menu.setOptions(menuOptions);
 		clientsLoginMenu.setOptions(clientsLoginOptions);
 		clientsMenu.setOptions(clientsOptions);
 		administratorMenu.setOptions(administradorOptions);
-		clientGamesFilterMenu.setOptions(clientsGamesFilterOptions);
+		clientGamesFilterMenu.setOptions(clientGamesFilterOptions);
 		clientRegisterMenu.setOptions(clientRegisterOptions);
 		createGameMenu.setOptions(gamesRegisterOptions);
+		clientHistoricoPorJogoMenu.setOptions(clientGamesHistoryOptions);
 
 		System.out.print("Deseja ter a experência do menu colorido?(y/n)");
 		color = input.nextLine().equals("y") || input.nextLine().equals("Y") ? true : false;
@@ -117,7 +133,6 @@ public class XulambsGames {
 	}
 
 	public static void switchMainMenu(Scanner input) {
-
 		List<Integer> validOptions = new ArrayList<>();
 		validOptions.addAll(Arrays.asList(1, 2));
 		menu.mainMenu();
@@ -145,10 +160,14 @@ public class XulambsGames {
 		int option = optionHandler(input.nextLine(), validOptions);
 
 		switch (option) {
+
 			case 1:
-				loginHandler(input);
+
 				break;
 			case 2:
+				loginHandler(input);
+				break;
+			case 3:
 				clientRegisterMenu.mainMenu();
 				createClient(input);
 				break;
@@ -165,18 +184,16 @@ public class XulambsGames {
 		Optional<Cliente> clienteLogado = clients.values().stream()
 				.filter(c -> c.getNome().equals(nome))
 				.findFirst();
-		
-		clienteLogado.ifPresentOrElse((c) -> loggedClientMenu(c), () -> {
+
+		clienteLogado.ifPresentOrElse((c) -> loggedClientMenu(input, c), () -> {
 			System.out.println("O nome não foi encontrado!");
 			switchClientsMenu(input);
 		});
 	}
 
-	public static void loggedClientMenu(Cliente cliente) {
-		Scanner input = new Scanner(System.in);
+	public static void loggedClientMenu(Scanner input, Cliente cliente) {
 		List<Integer> validOptions = new ArrayList<>();
 		validOptions.addAll(Arrays.asList(1, 2, 3, 4));
-
 		clientGamesFilterMenu.mainMenu();
 		int option = optionHandler(input.nextLine(), validOptions);
 
@@ -204,7 +221,31 @@ public class XulambsGames {
 				// cliente.historicoPorCategoria(categoria);
 				break;
 			default:
-				switchClientsMenu(input);
+
+				break;
+		}
+	}
+
+	public static void clientGameFilter(Scanner input, Cliente cliente) {
+		List<Integer> validOptions = new ArrayList<>();
+		validOptions.addAll(Arrays.asList(1, 2, 3, 4));
+
+		clientGamesFilterMenu.mainMenu();
+		int option = optionHandler(input.nextLine(), validOptions);
+		switch (option) {
+			case 1:
+				System.out.println(cliente.historicoPorCategoria(Lancamento.class));
+				break;
+			case 2:
+				System.out.println(cliente.historicoPorCategoria(Regular.class));
+				break;
+			case 3:
+				System.out.println(cliente.historicoPorCategoria(Promocional.class));
+				break;
+			case 4:
+				System.out.println(cliente.historicoPorCategoria(Premium.class));
+				break;
+			default:
 				break;
 		}
 	}
@@ -324,8 +365,8 @@ public class XulambsGames {
 	public static void createGame(Scanner input, String categoria) {
 		System.out.println(FaberCastel.colorize("\nConte o nome do jogo"));
 		String name = input.nextLine();
-		int value = -1;
-		while (value == -1) {
+		double value = -1.0;
+		while (value == -1.0) {
 			System.out
 					.println(FaberCastel
 							.colorize("\nBeleza, agora informe o valor do jogo\n(Utilize '.' no lugar de ',')"));
@@ -369,12 +410,10 @@ public class XulambsGames {
 				todasAsFabricas.addFactory(dadosFabrica[0],
 						(IFabricaJogos) Class.forName(dadosFabrica[1]).getConstructor().newInstance());
 			}
-
 		} catch (FileNotFoundException e) {
 			System.out.println("Arquivo de configuração de fábricas não encontrado. Favor verificar e reiniciar.");
 			pausaTeclado(new Scanner(System.in));
 			return;
-
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			System.out.println("Problema na criação de fábricas. Favor contactar o suporte.");
@@ -479,13 +518,13 @@ public class XulambsGames {
 		return opt;
 	}
 
-	public static int optionHandler(String input) {
-		Integer opt;
+	public static Double optionHandler(String input) {
+		Double opt;
 		try {
-			opt = Integer.valueOf(input);
+			opt = Double.valueOf(input);
 		} catch (Exception e) {
 			System.out.println(FaberCastel.inRed("\n!! Valor não aceito !!\n"));
-			return -1;
+			return -1.0;
 		}
 		return opt;
 	}
