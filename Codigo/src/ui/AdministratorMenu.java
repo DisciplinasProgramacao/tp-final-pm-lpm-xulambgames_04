@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import main.domain.cliente.Cliente;
 import main.domain.jogo.Jogo;
 import main.domain.jogo.factory.FabricaJogosCollection;
 import util.EscritaDeArquivo;
@@ -17,14 +18,16 @@ public class AdministratorMenu {
   private Menu createGameMenu = new Menu("Jogos", "Categorias");
   private Menu administratorMenu = new Menu("Administração", "-------");
 
+  private Map<String, Cliente> clients = new HashMap<>();
   private static Map<String, Jogo> games = new HashMap<>();
-  private static String gamesFile;
-
   private FabricaJogosCollection todasAsFabricas;
 
   private EscritaDeArquivo<Jogo> escrita = new EscritaDeArquivo<>();
+  private static String gamesFile;
 
-  public AdministratorMenu(Map<String, Jogo> jogos, String gamesFilename, FabricaJogosCollection todasAsFabricas) {
+  public AdministratorMenu(Map<String, Jogo> jogos, Map<String, Cliente> clients, String gamesFilename,
+      FabricaJogosCollection todasAsFabricas) {
+    this.clients = clients;
     games = jogos;
     gamesFile = gamesFilename;
     this.todasAsFabricas = todasAsFabricas;

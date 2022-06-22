@@ -36,7 +36,7 @@ public class XulambsGames {
 
 	static Menu menu = new Menu("XulambsGames", "Welcome");
 	static ClientMenu clientMenu = new ClientMenu(clients, clientsFile);
-	static AdministratorMenu admMenu = new AdministratorMenu(games, gamesFile, todasAsFabricas);
+	static AdministratorMenu admMenu = new AdministratorMenu(games, clients, gamesFile, todasAsFabricas);
 
 	public static void main(String[] args) {
 		HashMap<Integer, String> menuOptions = new HashMap<>();
@@ -89,7 +89,6 @@ public class XulambsGames {
 				todasAsFabricas.addFactory(dadosFabrica[0],
 						(IFabricaJogos) Class.forName(dadosFabrica[1]).getConstructor().newInstance());
 			}
-			todasAsFabricas.toString1();
 		} catch (FileNotFoundException e) {
 			System.out.println("Arquivo de configuração de fábricas não encontrado. Favor verificar e reiniciar.");
 			Menu.pausaTeclado(new Scanner(System.in));
