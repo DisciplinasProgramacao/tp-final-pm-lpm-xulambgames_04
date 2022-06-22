@@ -33,4 +33,13 @@ public class Lancamento extends Jogo implements IAdicional {
 		this.precoOriginal = valor;
 		this.preco = calcularPreco(this.precoOriginal);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Lancamento!:"
+				+ super.toString());
+
+		return sb.toString();
+	}
 }

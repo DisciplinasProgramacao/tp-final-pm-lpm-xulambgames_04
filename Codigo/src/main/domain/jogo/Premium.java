@@ -25,4 +25,13 @@ public class Premium extends Jogo {
 		this.preco = valor;
 		this.preco = calcularPreco(this.preco);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Premium!:"
+				+ super.toString());
+
+		return sb.toString();
+	}
 }
