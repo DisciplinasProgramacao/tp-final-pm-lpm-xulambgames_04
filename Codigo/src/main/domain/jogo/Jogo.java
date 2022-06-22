@@ -27,10 +27,8 @@ public abstract class Jogo implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-
 		sb.append("Nome: " + this.getNome()
 				+ "\nPreço: " + this.getPreco() + "\n");
-
 		return sb.toString();
 	}
 
