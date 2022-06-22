@@ -86,7 +86,7 @@ public class AdministratorMenu {
         Menu.pausaTeclado(input);
         break;
     }
-    switchAdministratorMenu(input);
+    return;
   }
 
   // #endregion
@@ -133,7 +133,6 @@ public class AdministratorMenu {
     novo.setPreco(value);
     games.put(novo.getNome(), novo);
     escrita.salvarBinario(games, gamesFile);
-
   }
 
   public static void printGames() {

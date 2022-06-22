@@ -35,7 +35,7 @@ public class XulambsGames {
 	static FabricaJogosCollection todasAsFabricas = new FabricaJogosCollection();
 
 	static Menu menu = new Menu("XulambsGames", "Welcome");
-	static ClientMenu clientMenu = new ClientMenu(clients, clientsFile);
+	static ClientMenu clientMenu = new ClientMenu(clients, games, clientsFile);
 	static AdministratorMenu admMenu = new AdministratorMenu(games, clients, gamesFile, todasAsFabricas);
 
 	public static void main(String[] args) {
@@ -52,14 +52,19 @@ public class XulambsGames {
 
 		menu.setOptions(menuOptions);
 
-		System.out.print("Deseja ter a experência do menu colorido?(y/n)");
-		color = input.nextLine().equals("y") || input.nextLine().equals("Y") ? true : false;
+		System.out.print("Deseja ter a experiência do menu colorido?(y/n)");
+		color = input.nextLine().equalsIgnoreCase("y") ? true : false;
 
 		if (color)
 			Menu.wColor(color);
 
-		switchMainMenu(input);
-		input.close();
+		try {
+			while (true)
+				switchMainMenu(input);
+
+		} finally {
+			input.close();
+		}
 	}
 
 	public static void switchMainMenu(Scanner input) {
@@ -69,13 +74,13 @@ public class XulambsGames {
 		int option = Menu.optionHandler(input.nextLine(), validOptions);
 
 		switch (option) {
+			case 0:
+				System.exit(0);
 			case 1:
 				clientMenu.switchClientsMenu(input);
 				break;
 			case 2:
 				admMenu.switchAdministratorMenu(input);
-				break;
-			default:
 				break;
 		}
 	}

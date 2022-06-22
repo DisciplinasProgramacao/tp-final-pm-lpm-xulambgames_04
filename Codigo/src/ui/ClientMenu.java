@@ -1,15 +1,20 @@
 package ui;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
+import main.domain.Recibo;
 import main.domain.cliente.Categoria;
 import main.domain.cliente.Cliente;
+import main.domain.jogo.Jogo;
 import main.domain.jogo.Lancamento;
 import main.domain.jogo.Premium;
 import main.domain.jogo.Promocional;
@@ -33,12 +38,14 @@ public class ClientMenu {
 	private EscritaDeArquivo<Cliente> escrita = new EscritaDeArquivo<>();
 
 	private static Map<String, Cliente> clients = new HashMap<>();
+	private static Map<String, Jogo> games = new HashMap<>();
 
 	private static String clientsFile;
 
-	public ClientMenu(Map<String, Cliente> clientes, String clientsFileName) {
+	public ClientMenu(Map<String, Cliente> clientes, Map<String, Jogo> jogos, String clientsFileName) {
 		clients = clientes;
 		clientsFile = clientsFileName;
+		games = jogos;
 
 		clientsOptions.put(1, "Meus jogos");
 		clientsOptions.put(2, "Comprar jogos");
@@ -48,10 +55,11 @@ public class ClientMenu {
 		clientsLoginOptions.put(2, "Cadastre-se");
 		clientsLoginOptions.put(0, "Voltar");
 
-		clientGamesFilterOptions.put(1, "Historico de compras");
-		clientGamesFilterOptions.put(2, "Historico por jogo");
-		clientGamesFilterOptions.put(3, "Historico por data");
-		clientGamesFilterOptions.put(4, "Historico por categoria");
+		clientGamesFilterOptions.put(1, "Comprar jogos");
+		clientGamesFilterOptions.put(2, "Historico de compras");
+		clientGamesFilterOptions.put(3, "Historico por jogo");
+		clientGamesFilterOptions.put(4, "Historico por data");
+		clientGamesFilterOptions.put(5, "Historico por categoria");
 		clientGamesFilterOptions.put(0, "Voltar");
 
 		clientRegisterOptions.put(1, "Empolgado");
@@ -91,25 +99,60 @@ public class ClientMenu {
 
 		switch (option) {
 			case 1:
-				// Historico de compras
-				cliente.historico();
+				AdministratorMenu.printGames();
+				buyGames(cliente, input);
 				break;
 			case 2:
-				// Historico por jogo
-
+				// cliente.historico();
+				System.out.println(cliente.getRecibos().get(0).getJogos());
+				Menu.pausaTeclado(input);
 				break;
 			case 3:
-				// Historico por data
+				// Historico por jogo
+
 				// cliente.historicoPorData(data);
 				break;
 			case 4:
+				// Historico por data
 				// Historico por categoria
 				// cliente.historicoPorCategoria(categoria);
 				break;
-			default:
+			case 5:
 
 				break;
 		}
+	}
+
+	public void buyGames(Cliente cliente, Scanner input) {
+		Menu.clearScreen();
+		AdministratorMenu.printGames();
+		System.out.println(Menu.stringer("\nDigite o nome do jogo desejado: "));
+		String JogoEscolhido = "";
+		Recibo recibo = new Recibo(LocalDate.now());
+		try {
+			JogoEscolhido = input.nextLine();
+		} catch (NoSuchElementException e) {
+			System.out.println(Menu.stringer("Escolha um jogo!", UiColors.RED));
+		}
+		try {
+			Jogo jogo = searchGame(JogoEscolhido);
+			recibo.addJogo(jogo);
+			if (cliente.comprar(recibo, recibo.calcularValorTotal())) {
+				escrita.salvarBinario(clients, clientsFile);
+				System.out.println(Menu.stringer("\nComprado com sucesso :)"));
+				System.out.println(cliente.getRecibos().get(0).getJogos());
+				Menu.pausaTeclado(input);
+				loggedClientMenu(input, cliente);
+			}
+			System.out.println("Houve um erro no pagamento :(");
+		} catch (Exception e) {
+			System.out.println(Menu.stringer(e.getMessage(), UiColors.RED));
+			buyGames(cliente, input);
+		}
+	}
+
+	public Jogo searchGame(String gameName) throws Exception {
+		return Optional.ofNullable(games.get(gameName)).orElseThrow(() -> new Exception("Jogo não encotrado!"));
 	}
 
 	public void clientGameFilter(Scanner input, Cliente cliente) {
