@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -40,12 +41,11 @@ public class XulambsGames {
 
 	static FabricaJogosCollection todasAsFabricas;
 
-	static Set<Cliente> clients = new HashSet<>();
-	static Set<Jogo> games = new HashSet<>();
+	static Map<String, Cliente> clients = new HashMap<>();
+	static Map<String, Jogo> games = new HashMap<>();
 
 	final static String clientsFile = "Clientes.txt";
 	final static String gamesFile = "Games.txt";
-
 	final static String factoryFilePath = "Factory.txt";
 
 	public static void main(String[] args) {
@@ -162,10 +162,10 @@ public class XulambsGames {
 		System.out.println(FaberCastel.colorize("Digite seu nome: "));
 		String nome = input.nextLine();
 
-		Optional<Cliente> clienteLogado = clients.stream()
+		Optional<Cliente> clienteLogado = clients.values().stream()
 				.filter(c -> c.getNome().equals(nome))
 				.findFirst();
-
+		
 		clienteLogado.ifPresentOrElse((c) -> loggedClientMenu(c), () -> {
 			System.out.println("O nome não foi encontrado!");
 			switchClientsMenu(input);
@@ -183,15 +183,25 @@ public class XulambsGames {
 		switch (option) {
 			case 1:
 				// Historico de compras
+				cliente.historico();
 				break;
 			case 2:
 				// Historico por jogo
+				Jogo jogo = games.get(input.nextLine());
+
+				if (jogo == null) {
+					cliente.historicoPorJogo(jogo);
+				} else {
+					System.out.print("Jogo nao existente");
+				}
 				break;
 			case 3:
 				// Historico por data
+				// cliente.historicoPorData(data);
 				break;
 			case 4:
 				// Historico por categoria
+				// cliente.historicoPorCategoria(categoria);
 				break;
 			default:
 				switchClientsMenu(input);
@@ -214,7 +224,7 @@ public class XulambsGames {
 				System.out.println(FaberCastel.colorize("Insira seu nome de EMPOLGADO: "));
 				nome = input.nextLine();
 				novo = new Cliente(Categoria.EMPOLGADO, nome);
-				clients.add(novo);
+				clients.put(novo.getNome(), novo); // trocar por id
 				salvarBinario(clients, clientsFile);
 				break;
 			case 2:
@@ -222,16 +232,15 @@ public class XulambsGames {
 				System.out.println(FaberCastel.colorize("Insira seu nome: "));
 				nome = input.nextLine();
 				novo = new Cliente(Categoria.CADASTRADO, nome);
-				clients.add(novo);
+				clients.put(novo.getNome(), novo); // trocar por id
 				salvarBinario(clients, clientsFile);
-
 				break;
 			case 3:
 				Menu.clearScreen();
 				System.out.println(FaberCastel.colorize("Insira seu nome de FANATICO: "));
 				nome = input.nextLine();
 				novo = new Cliente(Categoria.FANATICO, nome);
-				clients.add(novo);
+				clients.put(novo.getNome(), novo);
 				salvarBinario(clients, clientsFile);
 				break;
 			default:
@@ -266,14 +275,14 @@ public class XulambsGames {
 			case 5:
 				System.out.println(FaberCastel.colorize("\n\nClientes cadastrados:\n"));
 				clients.clear();
-				carregarDeArquivoTexto(Cliente.class, clientsFile, clients);
+				carregarClientesDeArquivoTexto(clientsFile, clients);
 				printClients();
 				pausaTeclado(input);
 				break;
 			case 6:
 				System.out.println(FaberCastel.colorize("\n\nJogos Disponíveis:\n"));
 				games.clear();
-				carregarDeArquivoTexto(Jogo.class, gamesFile, games);
+				carregarJogosDeArquivoTexto(gamesFile, games);
 				printGames();
 				pausaTeclado(input);
 				break;
@@ -318,14 +327,15 @@ public class XulambsGames {
 		int value = -1;
 		while (value == -1) {
 			System.out
-					.println(FaberCastel.colorize("\nBeleza, agora informe o valor do jogo\n(Utilize '.' no lugar de ',')"));
+					.println(FaberCastel
+							.colorize("\nBeleza, agora informe o valor do jogo\n(Utilize '.' no lugar de ',')"));
 			value = optionHandler(input.nextLine());
 		}
 
 		Jogo novo = todasAsFabricas.create(categoria);
 		novo.setNome(name);
 		novo.setPreco(value);
-		games.add(novo);
+		games.put(novo.getNome(), novo);
 
 		salvarBinario(games, gamesFile);
 		Menu.clearScreen();
@@ -334,7 +344,7 @@ public class XulambsGames {
 	}
 
 	public static void printGames() {
-		for (Jogo c : games) {
+		for (Jogo c : games.values()) {
 			System.out.println(c.toString() + "\n");
 		}
 	}
@@ -344,7 +354,7 @@ public class XulambsGames {
 	// Region configuracoes e utilidades
 
 	public static void printClients() {
-		for (Cliente c : clients) {
+		for (Cliente c : clients.values()) {
 			System.out.println(c.getNome());
 		}
 	}
@@ -374,18 +384,42 @@ public class XulambsGames {
 		}
 	}
 
-	public static <T> void carregarDeArquivoTexto(Class<T> classe, String nomeAqr, Set<T> list) {
+	public static void carregarClientesDeArquivoTexto(String nomeAqr, Map<String, Cliente> list) {
 		try {
-			T novo = null;
+			Cliente novo = null;
 			ObjectInputStream file = new ObjectInputStream(new FileInputStream(nomeAqr));
 			do {
 				try {
-					novo = (T) file.readObject();
+					novo = (Cliente) file.readObject();
 				} catch (EOFException e) {
 					return;
 				}
 				if (novo != null) {
-					list.add(novo);
+					list.put(novo.getNome(), novo);
+				}
+			} while (novo != null);
+			file.close();
+		} catch (IOException e) {
+			System.err.println(e);
+		} catch (ClassNotFoundException e) {
+			System.err.println(e);
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+	}
+
+	public static void carregarJogosDeArquivoTexto(String nomeAqr, Map<String, Jogo> list) {
+		try {
+			Jogo novo = null;
+			ObjectInputStream file = new ObjectInputStream(new FileInputStream(nomeAqr));
+			do {
+				try {
+					novo = (Jogo) file.readObject();
+				} catch (EOFException e) {
+					return;
+				}
+				if (novo != null) {
+					list.put(novo.getNome(), novo);
 				}
 			} while (novo != null);
 			file.close();
@@ -404,11 +438,11 @@ public class XulambsGames {
 	 * @param frota Lista
 	 * @param arq   Nome do arquivo a ser gerado
 	 */
-	public static <T> void salvarBinario(Set<T> objects, String arq) {
+	public static <T> void salvarBinario(Map<String, T> objects, String arq) {
 		ObjectOutputStream saida = null;
 		try {
 			saida = new ObjectOutputStream(new FileOutputStream(arq));
-			for (T obj : objects) {
+			for (T obj : objects.values()) {
 				saida.writeObject(obj);
 			}
 			saida.close();
