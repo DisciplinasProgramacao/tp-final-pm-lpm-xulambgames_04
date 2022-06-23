@@ -167,7 +167,6 @@ public class ClientMenu {
 			case 5:
 				// Historico por categoria
 				clientGameFilter(input, cliente);
-				Menu.pausaTeclado(input);
 				break;
 			default:
 				break;
