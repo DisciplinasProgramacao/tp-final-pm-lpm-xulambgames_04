@@ -170,8 +170,6 @@ public class ClientMenu {
 				clientGameFilter(input, cliente);
 				break;
 			default:
-				break;
-			default:
 				return;
 		}
 		loggedClientMenu(input, cliente);
