@@ -139,7 +139,7 @@ public class ClientMenu {
 				buyGames(cliente, input);
 				break;
 			case 2:
-				System.out.println(Menu.stringer(cliente.historico()));
+				System.out.print(Menu.stringer(cliente.historico()));
 				Menu.pausaTeclado(input);
 				break;
 			case 3:
@@ -147,9 +147,9 @@ public class ClientMenu {
 				System.out.print("Insira o nome do jogo no qual voce deseja pesquisar: ");
 				Jogo jogoPesquisado = games.get(input.nextLine());
 				if (jogoPesquisado == null) {
-					System.out.println("Jogo nao encontrado");
+					System.out.print("Jogo nao encontrado");
 				} else {
-					System.out.println(cliente.historicoPorJogo(jogoPesquisado));
+					System.out.print(cliente.historicoPorJogo(jogoPesquisado));
 				}
 				Menu.pausaTeclado(input);
 				break;
@@ -164,7 +164,7 @@ public class ClientMenu {
 
 				LocalDate data = LocalDate.of(ano, mes, dia);
 
-				System.out.println(cliente.historicoPorData(data));
+				System.out.print(cliente.historicoPorData(data));
 
 				Menu.pausaTeclado(input);
 				break;

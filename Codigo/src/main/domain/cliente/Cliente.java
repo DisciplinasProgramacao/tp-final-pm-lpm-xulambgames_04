@@ -112,12 +112,22 @@ public class Cliente implements Serializable {
 	}
 
 	public String historicoPorJogo(Jogo jogo) {
-		List<Recibo> historico = this.recibos.stream().filter(r -> r.getJogos().contains(jogo))
-				.collect(Collectors.toList());
-		if (historico.size() == 0) {
+		List<Recibo> rbs = new ArrayList<>();
+
+		for (Recibo r : recibos) {
+			List<Jogo> lista = r.getJogos().stream()
+					.filter(j -> j.getNome().equals(jogo.getNome()))
+					.collect(Collectors.toList());
+			if (lista.size() > 0) {
+				rbs.add(r);
+			}
+		}
+
+		if (rbs.size() == 0) {
 			return "Voce ainda nao comprou o jogo '" + jogo.getNome() + "'";
 		}
-		return relatorio(historico);
+
+		return relatorio(rbs);
 	}
 
 	public <T> String historicoPorCategoria(Class<T> categoria) {
@@ -135,10 +145,12 @@ public class Cliente implements Serializable {
 	}
 
 	public String historicoPorData(LocalDate data) {
-		List<Recibo> historico = this.recibos.stream().filter(r -> r.getData() == data).collect(Collectors.toList());
-		if (historico.size() == 0) {
+		List<Recibo> rbs = this.recibos.stream().filter(r -> r.getData().equals(data)).collect(Collectors.toList());
+
+		if (rbs.size() == 0) {
 			return "Voce nao realizou nenhuma compra no dia " + data;
 		}
-		return relatorio(historico);
+
+		return relatorio(rbs);
 	}
 }
