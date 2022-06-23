@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Map;
 
-import ui.FaberCastel;
+import ui.Menu;
+import ui.UiColors;
 
 public class EscritaDeArquivo<T> {
-	
+
 	public EscritaDeArquivo() {
-		
+
 	}
 
 	public void salvarBinario(Map<String, T> objects, String arq) {
@@ -22,7 +23,7 @@ public class EscritaDeArquivo<T> {
 				saida.writeObject(obj);
 			}
 			saida.close();
-			System.out.println(FaberCastel.colorize("Cadastro efetuado com sucesso! "));
+			System.out.println(Menu.stringer("Cadastro efetuado com sucesso! ", UiColors.GREEN));
 		} catch (FileNotFoundException fe) {
 			System.out.println("Arquivo não encontrado, ou permissão negada. Tente novamente com outro arquivo");
 			System.exit(1);

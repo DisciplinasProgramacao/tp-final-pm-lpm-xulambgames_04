@@ -43,4 +43,13 @@ public class Promocional extends Jogo implements IDesconto {
 		this.precoOriginal = valor;
 		this.preco = calcularPreco(valor);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Promocional!:"
+				+ super.toString());
+
+		return sb.toString();
+	}
 }
