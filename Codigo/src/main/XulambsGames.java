@@ -41,9 +41,7 @@ public class XulambsGames {
 
 	static Menu menu = new Menu("XulambsGames", "Welcome");
 	static ClientMenu clientMenu = new ClientMenu(clients, games, recibosFilePath, recibos, clientsFilePath);
-	static AdministratorMenu admMenu = new AdministratorMenu(
-			games, clients, recibos, recibosFilePath, gamesFilePath,
-			todasAsFabricas);
+	static AdministratorMenu admMenu = new AdministratorMenu(games, recibos, gamesFilePath, todasAsFabricas);
 
 	public static void main(String[] args) {
 		HashMap<Integer, String> menuOptions = new HashMap<>();

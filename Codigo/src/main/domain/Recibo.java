@@ -8,7 +8,7 @@ import java.util.List;
 import main.domain.jogo.Jogo;
 
 public class Recibo implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 13812391L;
 
 	private double valorTotal;
 	private double valorOriginal;

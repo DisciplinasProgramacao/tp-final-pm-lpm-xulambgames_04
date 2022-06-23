@@ -3,7 +3,7 @@ package main.domain.jogo;
 import java.io.Serializable;
 
 public abstract class Jogo implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 131231251255L;
 
 	protected double preco;
 	protected String nome;

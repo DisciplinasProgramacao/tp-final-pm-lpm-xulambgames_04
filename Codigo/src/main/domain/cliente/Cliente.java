@@ -6,13 +6,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import main.domain.Recibo;
 import main.domain.jogo.Jogo;
 
 public class Cliente implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1412489124L;
 
 	private Categoria categoria;
 	private List<Recibo> recibos;

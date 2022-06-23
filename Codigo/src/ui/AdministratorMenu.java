@@ -12,8 +12,9 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import main.domain.Recibo;
-import main.domain.cliente.Cliente;
 import main.domain.jogo.Jogo;
+import main.domain.jogo.Promocional;
+import main.domain.jogo.Regular;
 import main.domain.jogo.factory.FabricaJogosCollection;
 import util.EscritaDeArquivo;
 import util.LeituraDeArquivo;
@@ -23,21 +24,17 @@ public class AdministratorMenu {
   private Menu createGameMenu = new Menu("Jogos", "Categorias");
   private Menu administratorMenu = new Menu("Administração", "-------");
 
-  private Map<String, Cliente> clients = new HashMap<>();
   private static Map<String, Jogo> games = new HashMap<>();
   private static List<Recibo> recibos = new ArrayList<>();
   private FabricaJogosCollection todasAsFabricas;
 
   private EscritaDeArquivo<Jogo> escrita = new EscritaDeArquivo<>();
   private static String gamesFilePath;
-  private static String recibosFilePath;
 
-  public AdministratorMenu(Map<String, Jogo> jogos, Map<String, Cliente> clients, List<Recibo> recibosList,
-      String recibosFilename, String gamesFilePathname,
+  public AdministratorMenu(Map<String, Jogo> jogos, List<Recibo> recibosList,
+      String gamesFilePathname,
       FabricaJogosCollection todasAsFabricas) {
     recibos = recibosList;
-    recibosFilePath = recibosFilename;
-    this.clients = clients;
     games = jogos;
     gamesFilePath = gamesFilePathname;
     this.todasAsFabricas = todasAsFabricas;
@@ -174,6 +171,7 @@ public class AdministratorMenu {
   public void createGameMenu(Scanner input) {
     List<Integer> validOptions = new ArrayList<>();
     validOptions.addAll(Arrays.asList(1, 2, 3, 4));
+    double desconto = -1;
 
     createGameMenu.mainMenu();
     int option = Menu.optionHandler(input.nextLine(), validOptions);
@@ -182,10 +180,24 @@ public class AdministratorMenu {
         createGame(input, "Lancamento");
         break;
       case 2:
-        createGame(input, "Regular");
+        Regular novoRegular = (Regular) createGame(input, "Regular");
+
+        while (desconto > novoRegular.getPctDescontoMax() || desconto < 0) {
+          System.out.println(Menu.stringer(
+              "\nAté " + novoRegular.getPctDescontoMax() + "\nInsira o desconto relativo ao jogo:"));
+          desconto = Menu.optionHandler(input.nextLine());
+        }
+        novoRegular.setDesconto(desconto);
         break;
       case 3:
-        createGame(input, "Promocional");
+        Promocional novoPromocional = (Promocional) createGame(input, "Promocional");
+        while (desconto > novoPromocional.getPctDescontoMax() || desconto < novoPromocional.getPctDescontoMin()) {
+          System.out.println(Menu.stringer("\nEntre " + novoPromocional.getPctDescontoMin() + " e "
+              + novoPromocional.getPctDescontoMax() + "\nInsira o desconto relativo ao jogo:"));
+          desconto = Menu.optionHandler(input.nextLine());
+        }
+        novoPromocional.setDesconto(desconto);
+
         break;
       case 4:
         createGame(input, "Premium");
@@ -193,10 +205,11 @@ public class AdministratorMenu {
       default:
         switchAdministratorMenu(input);
     }
+    escrita.salvarBinario(games, gamesFilePath);
     switchAdministratorMenu(input);
   }
 
-  public void createGame(Scanner input, String categoria) {
+  public Jogo createGame(Scanner input, String categoria) {
     System.out.println(FaberCastel.colorize("\nConte o nome do jogo"));
     String name = input.nextLine();
     double value = -1.0;
@@ -210,7 +223,7 @@ public class AdministratorMenu {
     novo.setNome(name);
     novo.setPreco(value);
     games.put(novo.getNome(), novo);
-    escrita.salvarBinario(games, gamesFilePath);
+    return novo;
   }
 
   public static void printGames() {

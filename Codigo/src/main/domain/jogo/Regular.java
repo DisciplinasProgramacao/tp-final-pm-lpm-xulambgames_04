@@ -2,7 +2,7 @@ package main.domain.jogo;
 
 public class Regular extends Jogo implements IDesconto {
 	// Vendidos por um valor entre 70 e 100% do preço original
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 183211L;
 
 	public static final double PCT_DESCONTO_MAX = 0.3;
 
@@ -19,6 +19,10 @@ public class Regular extends Jogo implements IDesconto {
 		this.desconto = 0;
 		this.precoOriginal = 0;
 		this.preco = 0;
+	}
+
+	public double getPctDescontoMax() {
+		return PCT_DESCONTO_MAX;
 	}
 
 	public void setDesconto(double valor) {
@@ -49,7 +53,7 @@ public class Regular extends Jogo implements IDesconto {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Regular!:"
 				+ super.toString()
-				+ "\nPreco Original:" + this.precoOriginal);
+				+ "\nPreco Original:" + this.precoOriginal + "\n-----------------");
 		return sb.toString();
 	}
 }

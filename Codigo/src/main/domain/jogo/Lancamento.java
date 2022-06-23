@@ -1,7 +1,7 @@
 package main.domain.jogo;
 
 public class Lancamento extends Jogo implements IAdicional {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 434121L;
 
 	// Lançamentos Vendidos com adicional de 10% ao preço original
 	public static final double PCT_ADICIONAL = 0.10;
@@ -38,8 +38,8 @@ public class Lancamento extends Jogo implements IAdicional {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Lancamento!:"
-				+ super.toString() 
-				+ "\nPreco Original:" + this.precoOriginal);
+				+ super.toString()
+				+ "\nPreco Original:" + this.precoOriginal + "\n-----------------");
 
 		return sb.toString();
 	}

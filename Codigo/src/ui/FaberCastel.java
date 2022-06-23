@@ -2,7 +2,6 @@ package ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -69,7 +68,7 @@ public class FaberCastel {
 		sb.append(GREEN + text + RESET);
 		return sb.toString();
 	}
-	
+
 	public static String inColor(String text, UiColors color) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(color.colorize() + text + RESET);
