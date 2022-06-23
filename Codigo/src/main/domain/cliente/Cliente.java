@@ -101,7 +101,7 @@ public class Cliente implements Serializable {
 					sb.append("Recibo: \n");
 					sb.append("-------------");
 					sb.append(r.toString());
-					sb.append("\n-------------");
+					sb.append("\n-------------\n");
 				});
 		return sb.toString();
 	}
@@ -111,21 +111,32 @@ public class Cliente implements Serializable {
 	}
 
 	public String historicoPorJogo(Jogo jogo) {
-		List<Recibo> historico = this.recibos.stream().filter(r -> r.getJogos().contains(jogo))
-				.collect(Collectors.toList());
-		if (historico.size() == 0) {
-			return "Voce ainda nao comprou o jogo '" + jogo.getNome() + "'";
-		}
-		return relatorio(historico);
-	}
-
-	public <T> String historicoPorCategoria(Class<T> categoria) {
 		List<Recibo> rbs = new ArrayList<>();
 
 		for (Recibo r : recibos) {
 			List<Jogo> lista = r.getJogos().stream()
-					.filter(j -> j.getClass().equals(categoria.getClass()))
+					.filter(j -> j.getNome().equals(jogo.getNome()))
 					.collect(Collectors.toList());
+			if (lista.size() > 0) {
+				rbs.add(r);
+			}
+		}
+
+		if (rbs.size() == 0) {
+			return "Voce ainda nao comprou o jogo '" + jogo.getNome() + "'";
+		}
+
+		return relatorio(rbs);
+	}
+
+	public String historicoPorCategoria(String categoria) {
+		List<Recibo> rbs = new ArrayList<>();
+
+		for (Recibo r : recibos) {
+			List<Jogo> lista = r.getJogos().stream()
+					.filter(j -> j.getClass().getSimpleName().equals(categoria))
+					.collect(Collectors.toList());
+					
 			if (lista.size() > 0) {
 				rbs.add(r);
 			}
@@ -134,10 +145,12 @@ public class Cliente implements Serializable {
 	}
 
 	public String historicoPorData(LocalDate data) {
-		List<Recibo> historico = this.recibos.stream().filter(r -> r.getData() == data).collect(Collectors.toList());
-		if (historico.size() == 0) {
+		List<Recibo> rbs = this.recibos.stream().filter(r -> r.getData().equals(data)).collect(Collectors.toList());
+
+		if (rbs.size() == 0) {
 			return "Voce nao realizou nenhuma compra no dia " + data;
 		}
-		return relatorio(historico);
+
+		return relatorio(rbs);
 	}
 }
