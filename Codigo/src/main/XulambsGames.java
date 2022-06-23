@@ -47,15 +47,10 @@ public class XulambsGames {
 		HashMap<Integer, String> menuOptions = new HashMap<>();
 		boolean color = false;
 		Scanner input = new Scanner(System.in);
-		String factoryFilePath = "";
-		String clientsFilePath = "";
-		String gamesFilePath = "";
-		String recibosFilePath = "";
-
-		factoryFilePath = "Factory.txt";
-		clientsFilePath = "Clientes.txt";
-		gamesFilePath = "Games.txt";
-		recibosFilePath = "Recibos.txt";
+		String factoryFilePath = "Factory.txt";
+		String clientsFilePath = "Clientes.txt";
+		String gamesFilePath = "Games.txt";
+		String recibosFilePath = "Recibos.txt";
 
 		LeituraDeArquivo.carregarRecibosDeArquivoTexto(recibosFilePath, recibos);
 		LeituraDeArquivo.carregarClientesDeArquivoTexto(clientsFilePath, clients);
@@ -83,6 +78,11 @@ public class XulambsGames {
 		}
 	}
 
+	/**
+	 * Menu de interface de usuário.
+	 * 
+	 * @param input
+	 */
 	public static void switchMainMenu(Scanner input) {
 		List<Integer> validOptions = new ArrayList<>();
 		validOptions.addAll(Arrays.asList(1, 2));
@@ -101,6 +101,12 @@ public class XulambsGames {
 		}
 	}
 
+	/**
+	 * Carrega as fábricas de jogos definidas no arquivo de configuração para a
+	 * lista de fábricas.
+	 * 
+	 * @param factoryFilePath
+	 */
 	static void factoryConfig(String factoryFilePath) {
 		Scanner leitor = null;
 		try {
