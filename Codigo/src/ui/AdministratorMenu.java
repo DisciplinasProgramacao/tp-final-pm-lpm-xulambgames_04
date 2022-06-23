@@ -48,7 +48,7 @@ public class AdministratorMenu {
     administradorOptions.put(2, "Jogos mais vendidos");
     administradorOptions.put(3, "Jogos menos vendidos");
     administradorOptions.put(4, "Valor mensal vendido");
-    administradorOptions.put(5, "Catálogo de Clientes");
+    administradorOptions.put(5, "Lista de Clientes");
     administradorOptions.put(6, "Catálogo de Jogos");
     administradorOptions.put(0, "Voltar");
 
