@@ -86,6 +86,13 @@ public class AdministratorMenu {
         break;
       case 3:
         // Jogos menos vendidos
+        Jogo menosVendido = jogoMenosVendido();
+
+        if (menosVendido == null) {
+          System.out.println("Nenhum jogo foi vendido");
+        } else {
+          System.out.println(menosVendido.getNome());
+        }
         break;
       case 4:
         double total = calcularValorTotalArrecadoMesAtual();
@@ -119,12 +126,7 @@ public class AdministratorMenu {
     return acm.orElse(0.0);
   }
 
-  public Jogo jogosMaisVendidos() {
-    // Lista todos os jogos
-    // Agrupa os jogos (Jogo: numVendas)
-    // Ordena pelo valor/numero de vendas
-    // Jogo mais vendido retorna o primeiro
-    // Jogo menos vendido retorna o ultimo
+  public Map<Jogo, Integer> listarJogos() {
 
     List<Jogo> lista = recibos.stream()
         .flatMap(recibo -> recibo.getJogos().stream())
@@ -137,6 +139,11 @@ public class AdministratorMenu {
       result.put(t, val == null ? 1 : val + 1);
     }
 
+    return result;
+  }
+
+  public Jogo jogosMaisVendidos() {
+    Map<Jogo, Integer> result = listarJogos();
     Entry<Jogo, Integer> max = null;
 
     for (Entry<Jogo, Integer> e : result.entrySet()) {
@@ -148,6 +155,18 @@ public class AdministratorMenu {
     return max.getKey();
   }
 
+  public Jogo jogoMenosVendido() {
+    Map<Jogo, Integer> result = listarJogos();
+    Entry<Jogo, Integer> min = null;
+
+    for (Entry<Jogo, Integer> e : result.entrySet()) {
+      if (min == null || e.getValue() < min.getValue())
+        min = e;
+    }
+
+    Menu.pausaTeclado(new Scanner(System.in));
+    return min.getKey();
+  }
   // #endregion
 
   // Region gameRegion
