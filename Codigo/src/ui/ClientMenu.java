@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 import main.domain.Recibo;
 import main.domain.cliente.Categoria;
@@ -103,19 +102,35 @@ public class ClientMenu {
 				buyGames(cliente, input);
 				break;
 			case 2:
-				// cliente.historico();
-				System.out.println(cliente.getRecibos().get(0).getJogos());
+				System.out.println(cliente.historico());
 				Menu.pausaTeclado(input);
 				break;
 			case 3:
 				// Historico por jogo
-
-				// cliente.historicoPorData(data);
+				System.out.print("Insira o nome do jogo no qual voce deseja pesquisar: ");
+				Jogo jogoPesquisado = games.get(input.nextLine());
+				if (jogoPesquisado == null) {
+					System.out.println("Jogo nao encontrado");
+				} else {
+					System.out.println(jogoPesquisado.getNome());
+					System.out.println(cliente.getNome());
+				}
+				Menu.pausaTeclado(input);
 				break;
 			case 4:
 				// Historico por data
-				// Historico por categoria
-				// cliente.historicoPorCategoria(categoria);
+				System.out.print("Insira o ano: ");
+				int ano = Integer.parseInt(input.nextLine());
+				System.out.print("Insira o mes: ");
+				int mes = Integer.parseInt(input.nextLine());
+				System.out.print("Insira o dia: ");
+				int dia = Integer.parseInt(input.nextLine());
+
+				LocalDate data = LocalDate.of(ano, mes, dia);
+				
+				System.out.println(cliente.historicoPorData(data));
+				
+				Menu.pausaTeclado(input);
 				break;
 			case 5:
 
