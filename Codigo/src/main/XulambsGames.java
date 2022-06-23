@@ -33,7 +33,7 @@ public class XulambsGames {
 	static List<Recibo> recibos = new ArrayList<>();
 
 	final static String clientsFilePath = "Clientes.txt";
-	final static String gamesFilesPath = "Games.txt";
+	final static String gamesFilePath = "Games.txt";
 	final static String factoryFilePath = "Factory.txt";
 	final static String recibosFilePath = "Recibos.txt";
 
@@ -42,7 +42,7 @@ public class XulambsGames {
 	static Menu menu = new Menu("XulambsGames", "Welcome");
 	static ClientMenu clientMenu = new ClientMenu(clients, games, recibosFilePath, recibos, clientsFilePath);
 	static AdministratorMenu admMenu = new AdministratorMenu(
-			games, clients, recibos, recibosFilePath, gamesFilesPath,
+			games, clients, recibos, recibosFilePath, gamesFilePath,
 			todasAsFabricas);
 
 	public static void main(String[] args) {
@@ -51,6 +51,8 @@ public class XulambsGames {
 		Scanner input = new Scanner(System.in);
 
 		LeituraDeArquivo.carregarRecibosDeArquivoTexto(recibosFilePath, recibos);
+		LeituraDeArquivo.carregarClientesDeArquivoTexto(clientsFilePath, clients);
+		LeituraDeArquivo.carregarJogosDeArquivoTexto(gamesFilePath, games);
 		factoryConfig();
 
 		menuOptions.put(1, "Clientes");

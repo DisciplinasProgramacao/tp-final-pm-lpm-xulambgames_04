@@ -130,6 +130,7 @@ public class ClientMenu {
 		List<Integer> validOptions = new ArrayList<>();
 		validOptions.addAll(Arrays.asList(1, 2, 3, 4, 5));
 		clientGamesFilterMenu.mainMenu();
+
 		int option = Menu.optionHandler(input.nextLine(), validOptions);
 
 		switch (option) {
@@ -138,7 +139,7 @@ public class ClientMenu {
 				buyGames(cliente, input);
 				break;
 			case 2:
-				// cliente.historico();
+				System.out.println(Menu.stringer(cliente.historico()));
 				Menu.pausaTeclado(input);
 				break;
 			case 3:
@@ -173,36 +174,56 @@ public class ClientMenu {
 				clientGameFilter(input, cliente);
 				break;
 			default:
-				break;
+				return;
 		}
+		loggedClientMenu(input, cliente);
 	}
 
 	public void buyGames(Cliente cliente, Scanner input) {
 		Menu.clearScreen();
 		AdministratorMenu.printGames();
-		System.out.println(Menu.stringer("\nDigite o nome do jogo desejado: "));
-		String JogoEscolhido = "";
+		System.out.println(Menu
+				.stringer("\nDigite o nome dos jogos desejados separadamente por ',': "));
+		String[] jogosEscolhidos;
 		Recibo recibo = new Recibo(LocalDate.now());
 		try {
-			JogoEscolhido = input.nextLine();
-		} catch (NoSuchElementException e) {
-			System.out.println(Menu.stringer("Escolha um jogo!", UiColors.RED));
-		}
-		try {
-			Jogo jogo = searchGame(JogoEscolhido);
-			recibo.addJogo(jogo);
-			if (cliente.comprar(recibo, recibo.calcularValorTotal())) {
-				escritaCliente.salvarBinario(clients, clientsFile);
+			jogosEscolhidos = input.nextLine().split(",");
+
+			for (int i = 0; i < jogosEscolhidos.length; i++) {
+				Jogo jogo = searchGame(jogosEscolhidos[i]);
+				recibo.addJogo(jogo);
+			}
+			double valorDoCliente = recibo.getValor() * (1 - cliente.getCategoria().pctDesconto());
+
+			System.out.println(Menu.stringer("\nValor do pedido: R$ " + valorDoCliente, UiColors.CIAN));
+			System.out.print(Menu.stringer("Pagamento: R$ "));
+
+			double pagamento = -1.0;
+			while (pagamento == -1.0) {
+				pagamento = Menu.optionHandler(input.nextLine());
+			}
+
+			if (cliente.comprar(recibo, pagamento)) {
 				recibos.add(recibo);
+
+				escritaCliente.salvarBinario(clients, clientsFile);
 				escritaRecibo.salvarBinario(recibos, recibosFile);
-				System.out.println(Menu.stringer("\nComprado com sucesso :)"));
+				System.out.println(Menu.stringer("Comprado com sucesso!"));
 				Menu.pausaTeclado(input);
 				loggedClientMenu(input, cliente);
+			} else {
+				System.out.println(Menu.stringer("Dinheiro insuficiente!", UiColors.RED));
+				Menu.pausaTeclado(input);
+				buyGames(cliente, input);
 			}
-			System.out.println("Houve um erro no pagamento :(");
+
+		} catch (NoSuchElementException e) {
+			System.out.println(Menu.stringer("Escolha um jogo!", UiColors.RED));
 		} catch (Exception e) {
 			System.out.println(Menu.stringer(e.getMessage(), UiColors.RED));
-			buyGames(cliente, input);
+		} finally {
+			Menu.pausaTeclado(input);
+			loggedClientMenu(input, cliente);
 		}
 	}
 

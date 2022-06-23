@@ -24,7 +24,7 @@ public class EscritaDeArquivo<T> {
 				saida.writeObject(obj);
 			}
 			saida.close();
-			System.out.println(Menu.stringer("Cadastro efetuado com sucesso! ", UiColors.GREEN));
+			System.out.println(Menu.stringer("\nSalvo!", UiColors.GREEN));
 		} catch (FileNotFoundException fe) {
 			System.out.println("Arquivo não encontrado, ou permissão negada. Tente novamente com outro arquivo");
 			System.exit(1);
