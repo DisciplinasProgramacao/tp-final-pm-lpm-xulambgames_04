@@ -14,10 +14,6 @@ import main.domain.Recibo;
 import main.domain.cliente.Categoria;
 import main.domain.cliente.Cliente;
 import main.domain.jogo.Jogo;
-import main.domain.jogo.Lancamento;
-import main.domain.jogo.Premium;
-import main.domain.jogo.Promocional;
-import main.domain.jogo.Regular;
 import util.EscritaDeArquivo;
 import util.LeituraDeArquivo;
 
@@ -192,7 +188,7 @@ public class ClientMenu {
 				Jogo jogo = searchGame(jogosEscolhidos[i]);
 				recibo.addJogo(jogo);
 			}
-			double valorDoCliente = recibo.getValor() * (1 - cliente.getCategoria().pctDesconto());
+			double valorDoCliente = recibo.getValor() * (1 - cliente.getCategoria().calcularDesconto());
 
 			System.out.println(Menu.stringer("\nValor do pedido: R$ " + valorDoCliente, UiColors.CIAN));
 			System.out.print(Menu.stringer("Pagamento: R$ "));

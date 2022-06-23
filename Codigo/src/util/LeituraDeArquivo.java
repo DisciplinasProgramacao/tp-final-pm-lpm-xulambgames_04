@@ -11,13 +11,16 @@ import main.domain.Recibo;
 import main.domain.cliente.Cliente;
 import main.domain.jogo.Jogo;
 
+//Classe estática de leitura de arquivos
 public class LeituraDeArquivo {
 
-	public LeituraDeArquivo() {
-
-	}
-
-	public static void carregarClientesDeArquivoTexto(String nomeAqr, Map<String, Cliente> list) {
+	/**
+	 * Carrega um arquivo de texto e os insere em um Map<String, Cliente>
+	 * 
+	 * @param nomeAqr
+	 * @param map
+	 */
+	public static void carregarClientesDeArquivoTexto(String nomeAqr, Map<String, Cliente> map) {
 		try {
 			Cliente novo = null;
 			ObjectInputStream file = new ObjectInputStream(new FileInputStream(nomeAqr));
@@ -29,7 +32,7 @@ public class LeituraDeArquivo {
 					return;
 				}
 				if (novo != null) {
-					list.put(novo.getNome(), novo);
+					map.put(novo.getNome(), novo);
 				}
 			} while (novo != null);
 			file.close();
@@ -42,7 +45,13 @@ public class LeituraDeArquivo {
 		}
 	}
 
-	public static void carregarJogosDeArquivoTexto(String nomeAqr, Map<String, Jogo> list) {
+	/**
+	 * Carrega um arquivo de texto e os insere em um Map<String, Jogo>
+	 * 
+	 * @param nomeAqr
+	 * @param map
+	 */
+	public static void carregarJogosDeArquivoTexto(String nomeAqr, Map<String, Jogo> map) {
 		try {
 			Jogo novo = null;
 			ObjectInputStream file = new ObjectInputStream(new FileInputStream(nomeAqr));
@@ -54,7 +63,7 @@ public class LeituraDeArquivo {
 					return;
 				}
 				if (novo != null) {
-					list.put(novo.getNome(), novo);
+					map.put(novo.getNome(), novo);
 				}
 			} while (novo != null);
 			file.close();
@@ -67,6 +76,12 @@ public class LeituraDeArquivo {
 		}
 	}
 
+	/**
+	 * Carrega um arquivo de texto e os insere em uma list<Recibo>
+	 * 
+	 * @param nomeAqr
+	 * @param list
+	 */
 	public static void carregarRecibosDeArquivoTexto(String nomeAqr, List<Recibo> list) {
 		try {
 			Recibo novo = null;

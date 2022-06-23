@@ -125,6 +125,7 @@ public class Recibo implements Serializable {
 	}
 
 	/**
+	 * calcula o valor total do recibo com base no tipo de jogo e quantidade.
 	 * 
 	 * @return
 	 */
@@ -137,7 +138,7 @@ public class Recibo implements Serializable {
 	}
 
 	/**
-	 * Calcular quantidade de desconto nos jogos comprados
+	 * Calcular quantidade de desconto com nos jogos comprados
 	 * 
 	 * @return valor de desconto da compra inteira
 	 */
@@ -175,8 +176,11 @@ public class Recibo implements Serializable {
 	}
 
 	/**
+	 * retorna o relatório do recibo, com os títulos adquiridos, a data do Recibo, o
+	 * valor total do recibo, o valor pago e a quantidade de desconto aplicado sobre
+	 * o valor total.
 	 * 
-	 * @return
+	 * @return relatorio
 	 */
 	public String relatorio() {
 		StringBuilder sb = new StringBuilder();

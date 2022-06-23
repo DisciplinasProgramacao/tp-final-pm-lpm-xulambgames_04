@@ -34,7 +34,7 @@ public class XulambsGames {
 
 	final static String clientsFilePath = "Clientes.txt";
 	final static String gamesFilePath = "Games.txt";
-	final static String factoryFilePath = "Factory.txt";
+
 	final static String recibosFilePath = "Recibos.txt";
 
 	static FabricaJogosCollection todasAsFabricas = new FabricaJogosCollection();
@@ -47,11 +47,20 @@ public class XulambsGames {
 		HashMap<Integer, String> menuOptions = new HashMap<>();
 		boolean color = false;
 		Scanner input = new Scanner(System.in);
+		String factoryFilePath = "";
+		String clientsFilePath = "";
+		String gamesFilePath = "";
+		String recibosFilePath = "";
+
+		factoryFilePath = "Factory.txt";
+		clientsFilePath = "Clientes.txt";
+		gamesFilePath = "Games.txt";
+		recibosFilePath = "Recibos.txt";
 
 		LeituraDeArquivo.carregarRecibosDeArquivoTexto(recibosFilePath, recibos);
 		LeituraDeArquivo.carregarClientesDeArquivoTexto(clientsFilePath, clients);
 		LeituraDeArquivo.carregarJogosDeArquivoTexto(gamesFilePath, games);
-		factoryConfig();
+		factoryConfig(factoryFilePath);
 
 		menuOptions.put(1, "Clientes");
 		menuOptions.put(2, "Administração");
@@ -92,7 +101,7 @@ public class XulambsGames {
 		}
 	}
 
-	static void factoryConfig() {
+	static void factoryConfig(String factoryFilePath) {
 		Scanner leitor = null;
 		try {
 			leitor = new Scanner(new File(factoryFilePath));

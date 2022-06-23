@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
 import main.domain.Recibo;
 import main.domain.jogo.Jogo;
 
+/**
+ * Classe Cliente utilizada na XulambsGames para representar o usuário que tem a
+ * possibilidade de comprar diversos jogos.
+ */
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1412489124L;
 
@@ -23,7 +27,7 @@ public class Cliente implements Serializable {
 	/**
 	 * Contrutor de Cliente
 	 * 
-	 * @param categoria - Categoria do cliente (Cadastrado, Empolgado, Fanatico)
+	 * @param categoria - Categoria do cliente (Cadastrado, Empolgado, Fanático)
 	 */
 	public Cliente(Categoria categoria) {
 		this.setCategoria(categoria);
@@ -31,7 +35,7 @@ public class Cliente implements Serializable {
 	}
 
 	/**
-	 * Altera categoria e muda preco da mensalidade
+	 * Altera categoria e muda preço da mensalidade
 	 * 
 	 * @param categoria
 	 */
@@ -42,29 +46,54 @@ public class Cliente implements Serializable {
 		this.recibos = new LinkedList<Recibo>();
 	}
 
+	/**
+	 * Define a categoria do cliente.
+	 * 
+	 * @param categoria
+	 */
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 		this.setPrecoMensalidade(this.categoria.mensalidade());
 	}
 
+	/**
+	 * Retorna o nome do cliente.
+	 * 
+	 * @return nome
+	 */
 	public String getNome() {
 		return this.nome;
 	}
 
+	/**
+	 * Retorna a categoria do cliente
+	 * 
+	 * @return categoria do cliente
+	 */
 	public Categoria getCategoria() {
 		return this.categoria;
 	}
 
+	/**
+	 * Retorna uma lista com todos os recibos do cliente.
+	 * 
+	 * @return recibos do cliente
+	 */
 	public List<Recibo> getRecibos() {
 		return this.recibos;
 	}
 
+	/**
+	 * Retorna o preco da mensalidade definido na categoria.
+	 * 
+	 * @return preco da mensalidade
+	 */
 	public double getPrecoMensalidade() {
 		return this.precoMensalidade;
 	}
 
 	/**
-	 * (?) Mudar pra protected ou private
+	 * Define o preco da mensalidade.
 	 * 
 	 * @param precoMensalidade
 	 */
@@ -73,15 +102,18 @@ public class Cliente implements Serializable {
 	}
 
 	/**
+	 * Método de pagamento do cliente, onde ele informa o recibo e o pagamento e,
+	 * caso seja aceito (valor do pagamento >= valor do recibo) adiciona o recibo à
+	 * lista de recibos do cliente.
 	 * 
-	 * @param recibo      -
-	 * @param valorAPagar -
-	 * @return -
+	 * @param recibo      - recibo no qual o cliente está pagando
+	 * @param valorAPagar - valor informado pelo cliente para o pagamento do recibo.
+	 * @return - true caso o pagamento seja superior ao valor calculado no recibo.
 	 */
 	public boolean comprar(Recibo recibo, double valorAPagar) {
 		double precoRecibo = recibo.getValor();
 		double total = valorAPagar;
-		if (precoRecibo * (1 - this.categoria.pctDesconto()) <= valorAPagar) {
+		if (precoRecibo * (1 - this.categoria.calcularDesconto()) <= valorAPagar) {
 			this.recibos.add(recibo);
 			total = recibo.getValor();
 		}
@@ -106,10 +138,21 @@ public class Cliente implements Serializable {
 		return sb.toString();
 	}
 
+	/**
+	 * 
+	 * @return o relatorico dos recibos.
+	 */
 	public String historico() {
 		return relatorio(this.recibos);
 	}
 
+	/**
+	 * Retorna um historico de jogos comprados pelo cliente com base no jogo
+	 * escolhido.
+	 * 
+	 * @param jogo
+	 * @return historico.
+	 */
 	public String historicoPorJogo(Jogo jogo) {
 		List<Recibo> rbs = new ArrayList<>();
 
@@ -129,6 +172,13 @@ public class Cliente implements Serializable {
 		return relatorio(rbs);
 	}
 
+	/**
+	 * Retorna um historico de jogos comprados pelo cliente com base na categoria de
+	 * jogos escolhida.
+	 * 
+	 * @param categoria
+	 * @return historico
+	 */
 	public String historicoPorCategoria(String categoria) {
 		List<Recibo> rbs = new ArrayList<>();
 
@@ -136,7 +186,7 @@ public class Cliente implements Serializable {
 			List<Jogo> lista = r.getJogos().stream()
 					.filter(j -> j.getClass().getSimpleName().equals(categoria))
 					.collect(Collectors.toList());
-					
+
 			if (lista.size() > 0) {
 				rbs.add(r);
 			}
@@ -144,6 +194,12 @@ public class Cliente implements Serializable {
 		return relatorio(rbs);
 	}
 
+	/**
+	 * Retorna um historico de compras com base na data.
+	 * 
+	 * @param data
+	 * @return historico.
+	 */
 	public String historicoPorData(LocalDate data) {
 		List<Recibo> rbs = this.recibos.stream().filter(r -> r.getData().equals(data)).collect(Collectors.toList());
 

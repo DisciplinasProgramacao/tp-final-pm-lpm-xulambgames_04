@@ -94,7 +94,8 @@ public class AdministratorMenu {
       case 4:
         double total = calcularValorTotalArrecadoMesAtual();
         System.out
-            .println(Menu.stringer("Valor total arrecadado no mês " + LocalDate.now().getMonthValue() + " : " + total));
+            .println(
+                Menu.stringer("Valor total arrecadado no mês " + LocalDate.now().getMonthValue() + ": R$" + total));
 
         break;
       case 5:
@@ -109,8 +110,11 @@ public class AdministratorMenu {
         printGames();
         Menu.pausaTeclado(input);
         break;
+      case 0:
+        return;
     }
-    return;
+    Menu.pausaTeclado(new Scanner(System.in));
+    switchAdministratorMenu(input);
   }
 
   public double calcularValorTotalArrecadoMesAtual() {
@@ -118,8 +122,6 @@ public class AdministratorMenu {
         .filter(r -> r.getData().getMonth().equals(LocalDate.now().getMonth()))
         .mapToDouble(r -> r.getValor())
         .reduce((r1, r2) -> r1 + r2);
-
-    Menu.pausaTeclado(new Scanner(System.in));
     return acm.orElse(0.0);
   }
 
@@ -147,8 +149,6 @@ public class AdministratorMenu {
       if (max == null || e.getValue() > max.getValue())
         max = e;
     }
-
-    Menu.pausaTeclado(new Scanner(System.in));
     return max.getKey();
   }
 
@@ -161,7 +161,6 @@ public class AdministratorMenu {
         min = e;
     }
 
-    Menu.pausaTeclado(new Scanner(System.in));
     return min.getKey();
   }
   // #endregion

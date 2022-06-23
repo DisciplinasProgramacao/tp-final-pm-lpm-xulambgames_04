@@ -10,12 +10,21 @@ import java.util.Map;
 import ui.Menu;
 import ui.UiColors;
 
+/**
+ * Classe de escrita de arquivo definida por uma classe T.
+ */
 public class EscritaDeArquivo<T> {
 
 	public EscritaDeArquivo() {
 
 	}
 
+	/**
+	 * Salva uma lista de T objetos contidos em um Map
+	 * 
+	 * @param objects
+	 * @param arquivo
+	 */
 	public void salvarBinario(Map<String, T> objects, String arq) {
 		ObjectOutputStream saida = null;
 		try {
@@ -35,6 +44,12 @@ public class EscritaDeArquivo<T> {
 		}
 	}
 
+	/**
+	 * Salva uma lista de T objetos contidos em uma lista
+	 * 
+	 * @param objects
+	 * @param arquivo
+	 */
 	public void salvarBinario(List<T> objects, String arq) {
 		ObjectOutputStream saida = null;
 		try {

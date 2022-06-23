@@ -1,25 +1,48 @@
 package main.domain.jogo;
 
+/**
+ * Classe Premium é a classe mais básica descentende de Jogo, não possui valores
+ * adicionais e nem de desconto.
+ */
 public class Premium extends Jogo {
-	// Lançamentos Vendidos com adicional de 10% ao preço original
 	private static final long serialVersionUID = 15345323L;
 
+	/**
+	 * Construtor da classe.
+	 * 
+	 * @param nome
+	 * @param valor
+	 */
 	public Premium(String nome, double valor) {
 		this.nome = nome;
 		this.preco = valor;
 		setPreco(valor);
 	}
 
+	/**
+	 * Construtor vazio da classe.
+	 * preco definido como 0.
+	 */
 	public Premium() {
 		this.preco = 0;
 	}
 
+	/**
+	 * retorna o proprio valor do jogo.
+	 * 
+	 * @param valor
+	 * @return valor
+	 */
 	@Override
 	public Double calcularPreco(double valor) {
-		// TODO Auto-generated method stub
 		return valor;
 	}
 
+	/**
+	 * Define o preco do jogo
+	 * 
+	 * @param valor
+	 */
 	@Override
 	public void setPreco(double valor) {
 		this.preco = valor;
