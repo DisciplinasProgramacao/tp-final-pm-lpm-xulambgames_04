@@ -149,8 +149,7 @@ public class ClientMenu {
 				if (jogoPesquisado == null) {
 					System.out.println("Jogo nao encontrado");
 				} else {
-					System.out.println(jogoPesquisado.getNome());
-					System.out.println(cliente.getNome());
+					System.out.println(cliente.historicoPorJogo(jogoPesquisado));
 				}
 				Menu.pausaTeclado(input);
 				break;
