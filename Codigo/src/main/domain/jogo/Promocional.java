@@ -18,6 +18,7 @@ public class Promocional extends Jogo implements IDesconto {
 	public Promocional() {
 		this.precoOriginal = 0;
 		this.preco = 0;
+		this.pctDesconto = PCT_DESCONTO_MIN;
 	}
 
 	public double getPctDescontoMin() {

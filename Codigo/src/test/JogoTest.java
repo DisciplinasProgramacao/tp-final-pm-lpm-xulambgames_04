@@ -32,13 +32,18 @@ public class JogoTest {
 	
 	@Test
 	public void valorJogoLancamentoComAdicional() {
-		jogo = lancamento.criar("Stray", 350);
+		jogo = lancamento.criar();
+		jogo.setNome("Stray");
+		jogo.setPreco(350);
+		
 		assertEquals(385, jogo.getPreco());
 	}
 	
 	@Test
 	public void valorJogoPremium() {
-		jogo = premium.criar("Death Stranding", 150);
+		jogo = premium.criar();
+		jogo.setNome("Death Stranding");
+		jogo.setPreco(150);
 		assertEquals(150, jogo.getPreco());
 	}
 	
@@ -46,27 +51,35 @@ public class JogoTest {
 	
 	@Test
 	public void valorJogoRegularSemAtribuirDesconto() {
-		jogo = regular.criar("Sonic Racing", 160);
+		jogo = regular.criar();
+		jogo.setNome("Sonic Raginc");
+		jogo.setPreco(160);
 		assertEquals(160, jogo.getPreco());
 	}
 	
 	@Test
 	public void valorJogoRegularComDescontoAcimaDoPermitido() {
-		Regular jogo = (Regular) regular.criar("Sonic Racing", 160);
+		Regular jogo = (Regular) regular.criar();
+		jogo.setPreco(160);
+		jogo.setNome("Sonic Racing");
 		jogo.setDesconto(0.4);
 		assertEquals(160, jogo.getPreco());
 	}
 	
 	@Test
 	public void valorJogoRegularComDescontoAbaixoDoPermitido() {
-		Regular jogo = (Regular) regular.criar("Sonic Racing", 160);
+		Regular jogo = (Regular) regular.criar();
+		jogo.setPreco(160);
+		jogo.setNome("Sonic Racing");
 		jogo.setDesconto(-0.5);
 		assertEquals(160, jogo.getPreco());
 	}
 	
 	@Test
 	public void valorJogoRegularComDescontoDentroDoPermitido() {
-		Regular jogo = (Regular) regular.criar("Sonic Racing", 160);
+		Regular jogo = (Regular) regular.criar();
+		jogo.setPreco(160);
+		jogo.setNome("Sonic Racing");
 		jogo.setDesconto(0.3);
 		assertEquals(112, jogo.getPreco());
 	}
@@ -76,28 +89,36 @@ public class JogoTest {
 	// Region Jogo Promocional
 	@Test
 	public void valorJogoPromocionalSemAtribuirDesconto() {
-		jogo = promocional.criar("A Way Out", 30);
+		jogo = promocional.criar();
+		jogo.setNome("A Way Out");
+		jogo.setPreco(30);
 		assertEquals(15, jogo.getPreco());
 	}
 	
 	@Test
 	public void valorJogoPromocionalComDescontoAbaixoDoMinimo() {
-		Promocional jogo = (Promocional) promocional.criar("A Way Out", 30);
-			jogo.setDesconto(0.4);
+		Promocional jogo = (Promocional) promocional.criar();
+		jogo.setNome("A Way Out");
+		jogo.setPreco(30);
+		jogo.setDesconto(0.4);
 		assertEquals(15, jogo.getPreco());
 	}
 	
 	@Test
 	public void valorJogoPromocionalComDescontoAcimaDoMaximo() {
-		Promocional jogo = (Promocional) promocional.criar("A Way Out", 30);
-			jogo.setDesconto(0.8);
+		Promocional jogo = (Promocional) promocional.criar();
+		jogo.setNome("A Way Out");
+		jogo.setPreco(30);
+		jogo.setDesconto(0.8);
 		assertEquals(15, jogo.getPreco());
 	}
 	
 	@Test
 	public void valorJogoPromocionalComDescontoAceitavel() {
-		Promocional jogo = (Promocional) promocional.criar("A Way Out", 30);
-			jogo.setDesconto(0.6);
+		Promocional jogo = (Promocional) promocional.criar();
+		jogo.setNome("A Way Out");
+		jogo.setPreco(30);
+		jogo.setDesconto(0.6);
 		assertEquals(12, jogo.getPreco());
 	}
 	// ##End Region

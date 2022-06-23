@@ -46,15 +46,23 @@ public class ClienteTest {
 		premium = new FabricaPremium();
 		promocional = new FabricaPromocional();
 
-		jogoPromocional = (Promocional) promocional.criar("A Way Out", 30);
+		jogoPromocional = (Promocional) promocional.criar();
+		jogoPromocional.setNome("A Way Out");
+		jogoPromocional.setPreco(30);
 		jogoPromocional.setDesconto(0.8);
 
-		jogoRegular = (Regular) jRegular.criar("Sonic Racing", 160);
+		jogoRegular = (Regular) jRegular.criar();
+		jogoRegular.setNome("Sonic Racing");
+		jogoRegular.setPreco(160);
 		jogoRegular.setDesconto(0.3);
 
-		jogoPremium = (Premium) premium.criar("Death Stranding", 150);
+		jogoPremium = (Premium) premium.criar();
+		jogoPremium.setNome("Death Stranding");
+		jogoPremium.setPreco(150);
 
-		jogoLancamento = (Lancamento) lancamento.criar("Stray", 250);
+		jogoLancamento = (Lancamento) lancamento.criar();
+		jogoLancamento.setNome("Stray");
+		jogoLancamento.setPreco(250);
 
 		recibo = new Recibo(LocalDate.now());
 
@@ -85,7 +93,9 @@ public class ClienteTest {
 
 	@Test
 	public void comprarDoisJogosLancamento() {
-		Lancamento jogoLancamento2 = (Lancamento) lancamento.criar("Elden Ring", 250);
+		Lancamento jogoLancamento2 = (Lancamento) lancamento.criar();
+		jogoLancamento2.setNome("Elden Ring");
+		jogoLancamento2.setPreco(250);
 		recibo.addJogo(jogoLancamento2);
 		recibo.addJogo(jogoLancamento);
 
@@ -99,8 +109,12 @@ public class ClienteTest {
 
 	@Test
 	public void comprarTresJogosPremium() {
-		Premium jogoPremium2 = (Premium) premium.criar("Elden Ring", 150);
-		Premium jogoPremium3 = (Premium) premium.criar("The Legend of Zelda: Breath of the Wild", 150);
+		Premium jogoPremium2 = (Premium) premium.criar();
+		jogoPremium2.setNome("Elden Ring");
+		jogoPremium2.setPreco(150);
+		Premium jogoPremium3 = (Premium) premium.criar();
+		jogoPremium3.setNome("The Legend of Zelda: Breath of the Wild");
+		jogoPremium3.setPreco(150);
 
 		recibo.addJogo(jogoPremium);
 		recibo.addJogo(jogoPremium2);
@@ -115,8 +129,9 @@ public class ClienteTest {
 	// Region fanatico
 	@Test
 	public void comprarDoisJogosPremium() {
-		Premium jogoPremium2 = (Premium) premium.criar("Elden Ring", 150);
-
+		Premium jogoPremium2 = (Premium) premium.criar();
+		jogoPremium2.setNome("Elden Ring");
+		jogoPremium2.setPreco(150);
 		recibo.addJogo(jogoPremium);
 		recibo.addJogo(jogoPremium2);
 
@@ -126,10 +141,13 @@ public class ClienteTest {
 	// ##EndRegion
 	@Test
 	public void geracaoDeRelatorio() {
-		Premium jogoPremium2 = (Premium) premium.criar("Elden Ring", 150);
+		Premium jogoPremium2 = (Premium) premium.criar();
+		jogoPremium2.setNome("Elden Ring");
+		jogoPremium2.setPreco(150);
+
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("Recibo: \n"
+		sb.append("Recibo:\n"
 				+ "-------------\n"
 				+ "Data: " + LocalDate.now() + "\n"
 				+ "\r\n"
@@ -141,7 +159,7 @@ public class ClienteTest {
 				+ "Desconto: 10.0%\n"
 				+ "Valor Total: 270.0\n"
 				+ "Valor Pago: 189.0\n"
-				+ "-------------");
+				+ "-------------\n");
 
 		recibo.addJogo(jogoPremium);
 		recibo.addJogo(jogoPremium2);
