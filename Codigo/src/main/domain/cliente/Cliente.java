@@ -130,13 +130,14 @@ public class Cliente implements Serializable {
 		return relatorio(rbs);
 	}
 
-	public <T> String historicoPorCategoria(Class<T> categoria) {
+	public String historicoPorCategoria(String categoria) {
 		List<Recibo> rbs = new ArrayList<>();
 
 		for (Recibo r : recibos) {
 			List<Jogo> lista = r.getJogos().stream()
-					.filter(j -> j.getClass().equals(categoria.getClass()))
+					.filter(j -> j.getClass().getSimpleName().equals(categoria))
 					.collect(Collectors.toList());
+					
 			if (lista.size() > 0) {
 				rbs.add(r);
 			}

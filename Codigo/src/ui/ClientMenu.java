@@ -106,19 +106,19 @@ public class ClientMenu {
 
 		switch (option) {
 			case 1:
-				System.out.print(cliente.historicoPorCategoria(Lancamento.class));
+				System.out.print(cliente.historicoPorCategoria("Lancamento"));
 				Menu.pausaTeclado(input);
 				break;
 			case 2:
-				System.out.print(cliente.historicoPorCategoria(Regular.class));
+				System.out.print(cliente.historicoPorCategoria("Regular"));
 				Menu.pausaTeclado(input);
 				break;
 			case 3:
-				System.out.print(cliente.historicoPorCategoria(Promocional.class));
+				System.out.print(cliente.historicoPorCategoria("Promocional"));
 				Menu.pausaTeclado(input);
 				break;
 			case 4:
-				System.out.print(cliente.historicoPorCategoria(Premium.class));
+				System.out.print(cliente.historicoPorCategoria("Premium"));
 				Menu.pausaTeclado(input);
 				break;
 			default:
