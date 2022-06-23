@@ -102,7 +102,7 @@ public class Cliente implements Serializable {
 					sb.append("Recibo: \n");
 					sb.append("-------------");
 					sb.append(r.toString());
-					sb.append("\n-------------");
+					sb.append("\n-------------\n");
 				});
 		return sb.toString();
 	}
