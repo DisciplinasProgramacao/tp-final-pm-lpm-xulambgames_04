@@ -38,7 +38,8 @@ public class Lancamento extends Jogo implements IAdicional {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Lancamento!:"
-				+ super.toString());
+				+ super.toString() 
+				+ "\nPreco Original:" + this.precoOriginal);
 
 		return sb.toString();
 	}

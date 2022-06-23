@@ -217,7 +217,7 @@ public class AdministratorMenu {
     LeituraDeArquivo.carregarJogosDeArquivoTexto(gamesFilePath, games);
 
     for (Jogo c : games.values()) {
-      System.out.println(Menu.stringer(c.getNome()));
+      System.out.println(Menu.stringer(c.toString()));
     }
   }
 }

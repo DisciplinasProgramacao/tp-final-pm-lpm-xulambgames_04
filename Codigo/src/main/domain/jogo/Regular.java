@@ -48,8 +48,8 @@ public class Regular extends Jogo implements IDesconto {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Regular!:"
-				+ super.toString());
-
+				+ super.toString()
+				+ "\nPreco Original:" + this.precoOriginal);
 		return sb.toString();
 	}
 }

@@ -24,11 +24,15 @@ public abstract class Jogo implements Serializable {
 		this.nome = nome;
 	}
 
-	@Override
-	public String toString() {
+	public String relatorio() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Nome: " + this.getNome()
+		sb.append("\nNome: " + this.getNome()
 				+ "\nPreço: " + this.getPreco() + "\n");
 		return sb.toString();
+	}
+
+	@Override
+	public String toString() {
+		return this.relatorio();
 	}
 }
