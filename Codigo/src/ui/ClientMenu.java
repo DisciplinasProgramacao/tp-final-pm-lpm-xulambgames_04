@@ -98,6 +98,30 @@ public class ClientMenu {
 		return clienteLogado.orElseThrow(() -> new Exception("Cliente não encontrado!"));
 	}
 
+	public void clientGameFilter(Scanner input, Cliente cliente) {
+		List<Integer> validOptions = new ArrayList<>();
+		validOptions.addAll(Arrays.asList(1, 2, 3, 4));
+		clientHistoricoPorJogoMenu.mainMenu();
+		int option = Menu.optionHandler(input.nextLine(), validOptions);
+
+		switch (option) {
+			case 1:
+				System.out.println(cliente.historicoPorCategoria(Lancamento.class));
+				break;
+			case 2:
+				System.out.println(cliente.historicoPorCategoria(Regular.class));
+				break;
+			case 3:
+				System.out.println(cliente.historicoPorCategoria(Promocional.class));
+				break;
+			case 4:
+				System.out.println(cliente.historicoPorCategoria(Premium.class));
+				break;
+			default:
+				break;
+		}
+	}
+
 	public void loggedClientMenu(Scanner input, Cliente cliente) {
 		List<Integer> validOptions = new ArrayList<>();
 		validOptions.addAll(Arrays.asList(1, 2, 3, 4));
@@ -141,7 +165,11 @@ public class ClientMenu {
 				Menu.pausaTeclado(input);
 				break;
 			case 5:
-
+				// Historico por categoria
+				clientGameFilter(input, cliente);
+				Menu.pausaTeclado(input);
+				break;
+			default:
 				break;
 		}
 	}
@@ -177,30 +205,6 @@ public class ClientMenu {
 
 	public Jogo searchGame(String gameName) throws Exception {
 		return Optional.ofNullable(games.get(gameName)).orElseThrow(() -> new Exception("Jogo não encotrado!"));
-	}
-
-	public void clientGameFilter(Scanner input, Cliente cliente) {
-		List<Integer> validOptions = new ArrayList<>();
-		validOptions.addAll(Arrays.asList(1, 2, 3, 4));
-
-		clientGamesFilterMenu.mainMenu();
-		int option = Menu.optionHandler(input.nextLine(), validOptions);
-		switch (option) {
-			case 1:
-				System.out.println(cliente.historicoPorCategoria(Lancamento.class));
-				break;
-			case 2:
-				System.out.println(cliente.historicoPorCategoria(Regular.class));
-				break;
-			case 3:
-				System.out.println(cliente.historicoPorCategoria(Promocional.class));
-				break;
-			case 4:
-				System.out.println(cliente.historicoPorCategoria(Premium.class));
-				break;
-			default:
-				break;
-		}
 	}
 
 	public void createClientMenu(Scanner input) throws Exception {
