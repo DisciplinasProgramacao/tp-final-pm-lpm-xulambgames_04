@@ -124,7 +124,7 @@ public class ClientMenu {
 
 	public void loggedClientMenu(Scanner input, Cliente cliente) {
 		List<Integer> validOptions = new ArrayList<>();
-		validOptions.addAll(Arrays.asList(1, 2, 3, 4));
+		validOptions.addAll(Arrays.asList(1, 2, 3, 4, 5));
 		clientGamesFilterMenu.mainMenu();
 		int option = Menu.optionHandler(input.nextLine(), validOptions);
 
