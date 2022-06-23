@@ -1,12 +1,16 @@
 package ui;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.Scanner;
 
+import main.domain.Recibo;
 import main.domain.cliente.Cliente;
 import main.domain.jogo.Jogo;
 import main.domain.jogo.factory.FabricaJogosCollection;
@@ -20,16 +24,21 @@ public class AdministratorMenu {
 
   private Map<String, Cliente> clients = new HashMap<>();
   private static Map<String, Jogo> games = new HashMap<>();
+  private static List<Recibo> recibos = new ArrayList<>();
   private FabricaJogosCollection todasAsFabricas;
 
   private EscritaDeArquivo<Jogo> escrita = new EscritaDeArquivo<>();
-  private static String gamesFile;
+  private static String gamesFilePath;
+  private static String recibosFilePath;
 
-  public AdministratorMenu(Map<String, Jogo> jogos, Map<String, Cliente> clients, String gamesFilename,
+  public AdministratorMenu(Map<String, Jogo> jogos, Map<String, Cliente> clients, List<Recibo> recibosList,
+      String recibosFilename, String gamesFilePathname,
       FabricaJogosCollection todasAsFabricas) {
+    recibos = recibosList;
+    recibosFilePath = recibosFilename;
     this.clients = clients;
     games = jogos;
-    gamesFile = gamesFilename;
+    gamesFilePath = gamesFilePathname;
     this.todasAsFabricas = todasAsFabricas;
 
     HashMap<Integer, String> gamesRegisterOptions = new HashMap<>();
@@ -71,7 +80,10 @@ public class AdministratorMenu {
         // Jogos menos vendidos
         break;
       case 4:
-        // Valor mensal vendido
+        double total = calcularValorTotalArrecadoMesAtual();
+        System.out
+            .println(Menu.stringer("Valor total arrecadado no mês " + LocalDate.now().getMonthValue() + " : " + total));
+
         break;
       case 5:
         System.out.println(Menu.stringer("\n\nClientes cadastrados:\n"));
@@ -81,12 +93,22 @@ public class AdministratorMenu {
       case 6:
         System.out.println(Menu.stringer("\n\nJogos Disponíveis:\n"));
         games.clear();
-        LeituraDeArquivo.carregarJogosDeArquivoTexto(gamesFile, games);
+        LeituraDeArquivo.carregarJogosDeArquivoTexto(gamesFilePath, games);
         printGames();
         Menu.pausaTeclado(input);
         break;
     }
     return;
+  }
+
+  public double calcularValorTotalArrecadoMesAtual() {
+    OptionalDouble acm = recibos.stream()
+        .filter(r -> r.getData().getMonth().equals(LocalDate.now().getMonth()))
+        .mapToDouble(r -> r.getValor())
+        .reduce((r1, r2) -> r1 + r2);
+
+    Menu.pausaTeclado(new Scanner(System.in));
+    return acm.orElse(0.0);
   }
 
   // #endregion
@@ -132,11 +154,11 @@ public class AdministratorMenu {
     novo.setNome(name);
     novo.setPreco(value);
     games.put(novo.getNome(), novo);
-    escrita.salvarBinario(games, gamesFile);
+    escrita.salvarBinario(games, gamesFilePath);
   }
 
   public static void printGames() {
-    LeituraDeArquivo.carregarJogosDeArquivoTexto(gamesFile, games);
+    LeituraDeArquivo.carregarJogosDeArquivoTexto(gamesFilePath, games);
 
     for (Jogo c : games.values()) {
       System.out.println(Menu.stringer(c.getNome()));

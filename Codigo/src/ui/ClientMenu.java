@@ -35,17 +35,25 @@ public class ClientMenu {
 	private HashMap<Integer, String> clientGamesHistoryOptions = new HashMap<>();
 	private HashMap<Integer, String> clientRegisterOptions = new HashMap<>();
 
-	private EscritaDeArquivo<Cliente> escrita = new EscritaDeArquivo<>();
+	private EscritaDeArquivo<Cliente> escritaCliente = new EscritaDeArquivo<>();
+	private EscritaDeArquivo<Recibo> escritaRecibo = new EscritaDeArquivo<>();
+	private List<Recibo> recibos = new ArrayList<>();
 
 	private static Map<String, Cliente> clients = new HashMap<>();
 	private static Map<String, Jogo> games = new HashMap<>();
 
 	private static String clientsFile;
+	private String recibosFile;
 
-	public ClientMenu(Map<String, Cliente> clientes, Map<String, Jogo> jogos, String clientsFileName) {
+	public ClientMenu(Map<String, Cliente> clientes, Map<String, Jogo> jogos, String recibosFile,
+			List<Recibo> recibosList,
+			String clientsFileName) {
+
+		this.recibosFile = recibosFile;
 		clients = clientes;
 		clientsFile = clientsFileName;
 		games = jogos;
+		recibos = recibosList;
 
 		clientsOptions.put(1, "Meus jogos");
 		clientsOptions.put(2, "Comprar jogos");
@@ -104,7 +112,6 @@ public class ClientMenu {
 				break;
 			case 2:
 				// cliente.historico();
-				System.out.println(cliente.getRecibos().get(0).getJogos());
 				Menu.pausaTeclado(input);
 				break;
 			case 3:
@@ -138,9 +145,10 @@ public class ClientMenu {
 			Jogo jogo = searchGame(JogoEscolhido);
 			recibo.addJogo(jogo);
 			if (cliente.comprar(recibo, recibo.calcularValorTotal())) {
-				escrita.salvarBinario(clients, clientsFile);
+				escritaCliente.salvarBinario(clients, clientsFile);
+				recibos.add(recibo);
+				escritaRecibo.salvarBinario(recibos, recibosFile);
 				System.out.println(Menu.stringer("\nComprado com sucesso :)"));
-				System.out.println(cliente.getRecibos().get(0).getJogos());
 				Menu.pausaTeclado(input);
 				loggedClientMenu(input, cliente);
 			}
@@ -194,21 +202,21 @@ public class ClientMenu {
 				nome = input.nextLine();
 				novo = new Cliente(Categoria.EMPOLGADO, nome);
 				clients.put(novo.getNome(), novo); // trocar por id
-				escrita.salvarBinario(clients, clientsFile);
+				escritaCliente.salvarBinario(clients, clientsFile);
 				break;
 			case 2:
 				System.out.println(Menu.stringer("Insira seu nome: "));
 				nome = input.nextLine();
 				novo = new Cliente(Categoria.CADASTRADO, nome);
 				clients.put(novo.getNome(), novo); // trocar por id
-				escrita.salvarBinario(clients, clientsFile);
+				escritaCliente.salvarBinario(clients, clientsFile);
 				break;
 			case 3:
 				System.out.println(Menu.stringer("Insira seu nome de FANATICO: "));
 				nome = input.nextLine();
 				novo = new Cliente(Categoria.FANATICO, nome);
 				clients.put(novo.getNome(), novo);
-				escrita.salvarBinario(clients, clientsFile);
+				escritaCliente.salvarBinario(clients, clientsFile);
 				break;
 			default:
 		}
@@ -259,7 +267,7 @@ public class ClientMenu {
 				nome = input.nextLine();
 				novo = new Cliente(Categoria.EMPOLGADO, nome);
 				clients.put(novo.getNome(), novo); // trocar por id
-				escrita.salvarBinario(clients, clientsFile);
+				escritaCliente.salvarBinario(clients, clientsFile);
 
 				break;
 			case 2:
@@ -268,7 +276,7 @@ public class ClientMenu {
 				nome = input.nextLine();
 				novo = new Cliente(Categoria.CADASTRADO, nome);
 				clients.put(novo.getNome(), novo); // trocar por id
-				escrita.salvarBinario(clients, clientsFile);
+				escritaCliente.salvarBinario(clients, clientsFile);
 				break;
 			case 3:
 				Menu.clearScreen();
@@ -276,7 +284,7 @@ public class ClientMenu {
 				nome = input.nextLine();
 				novo = new Cliente(Categoria.FANATICO, nome);
 				clients.put(novo.getNome(), novo);
-				escrita.salvarBinario(clients, clientsFile);
+				escritaCliente.salvarBinario(clients, clientsFile);
 				break;
 			default:
 		}

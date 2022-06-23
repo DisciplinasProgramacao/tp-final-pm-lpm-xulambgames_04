@@ -31,5 +31,4 @@ public abstract class Jogo implements Serializable {
 				+ "\nPreço: " + this.getPreco() + "\n");
 		return sb.toString();
 	}
-
 }

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.List;
 import java.util.Map;
 
 import ui.Menu;
@@ -24,6 +25,24 @@ public class EscritaDeArquivo<T> {
 			}
 			saida.close();
 			System.out.println(Menu.stringer("Cadastro efetuado com sucesso! ", UiColors.GREEN));
+		} catch (FileNotFoundException fe) {
+			System.out.println("Arquivo não encontrado, ou permissão negada. Tente novamente com outro arquivo");
+			System.exit(1);
+		} catch (IOException ex) {
+			System.out.println("Problemas na operação de E/S. Contacte o suporte");
+			System.out.println(ex.getMessage());
+			System.exit(1);
+		}
+	}
+
+	public void salvarBinario(List<T> objects, String arq) {
+		ObjectOutputStream saida = null;
+		try {
+			saida = new ObjectOutputStream(new FileOutputStream(arq));
+			for (T obj : objects) {
+				saida.writeObject(obj);
+			}
+			saida.close();
 		} catch (FileNotFoundException fe) {
 			System.out.println("Arquivo não encontrado, ou permissão negada. Tente novamente com outro arquivo");
 			System.exit(1);

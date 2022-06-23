@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import main.domain.Recibo;
 import main.domain.cliente.Cliente;
 import main.domain.jogo.Jogo;
 import main.domain.jogo.factory.FabricaJogosCollection;
@@ -17,6 +18,7 @@ import main.domain.jogo.factory.IFabricaJogos;
 import ui.AdministratorMenu;
 import ui.ClientMenu;
 import ui.Menu;
+import util.LeituraDeArquivo;
 
 //Cliente comprar o jogo
 //Filtros dentro do switch do cliente -> métodos prontos
@@ -28,22 +30,27 @@ public class XulambsGames {
 
 	static Map<String, Cliente> clients = new HashMap<>();
 	static Map<String, Jogo> games = new HashMap<>();
-	final static String clientsFile = "Clientes.txt";
-	final static String gamesFile = "Games.txt";
+	static List<Recibo> recibos = new ArrayList<>();
+
+	final static String clientsFilePath = "Clientes.txt";
+	final static String gamesFilesPath = "Games.txt";
 	final static String factoryFilePath = "Factory.txt";
+	final static String recibosFilePath = "Recibos.txt";
 
 	static FabricaJogosCollection todasAsFabricas = new FabricaJogosCollection();
 
 	static Menu menu = new Menu("XulambsGames", "Welcome");
-	static ClientMenu clientMenu = new ClientMenu(clients, games, clientsFile);
-	static AdministratorMenu admMenu = new AdministratorMenu(games, clients, gamesFile, todasAsFabricas);
+	static ClientMenu clientMenu = new ClientMenu(clients, games, recibosFilePath, recibos, clientsFilePath);
+	static AdministratorMenu admMenu = new AdministratorMenu(
+			games, clients, recibos, recibosFilePath, gamesFilesPath,
+			todasAsFabricas);
 
 	public static void main(String[] args) {
 		HashMap<Integer, String> menuOptions = new HashMap<>();
-
 		boolean color = false;
 		Scanner input = new Scanner(System.in);
 
+		LeituraDeArquivo.carregarRecibosDeArquivoTexto(recibosFilePath, recibos);
 		factoryConfig();
 
 		menuOptions.put(1, "Clientes");
