@@ -6,9 +6,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.Scanner;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import main.domain.Recibo;
 import main.domain.cliente.Cliente;
@@ -75,6 +76,13 @@ public class AdministratorMenu {
         break;
       case 2:
         // Jogos mais vendidos
+        Jogo maisVendido = jogosMaisVendidos();
+
+        if (maisVendido == null) {
+          System.out.println("Nenhum jogo foi vendido");
+        } else {
+          System.out.println(maisVendido.getNome());
+        }
         break;
       case 3:
         // Jogos menos vendidos
@@ -109,6 +117,35 @@ public class AdministratorMenu {
 
     Menu.pausaTeclado(new Scanner(System.in));
     return acm.orElse(0.0);
+  }
+
+  public Jogo jogosMaisVendidos() {
+    // Lista todos os jogos
+    // Agrupa os jogos (Jogo: numVendas)
+    // Ordena pelo valor/numero de vendas
+    // Jogo mais vendido retorna o primeiro
+    // Jogo menos vendido retorna o ultimo
+
+    List<Jogo> lista = recibos.stream()
+        .flatMap(recibo -> recibo.getJogos().stream())
+        .collect(Collectors.toList());
+
+    Map<Jogo, Integer> result = new HashMap<>();
+
+    for (Jogo t : lista) {
+      Integer val = result.get(t);
+      result.put(t, val == null ? 1 : val + 1);
+    }
+
+    Entry<Jogo, Integer> max = null;
+
+    for (Entry<Jogo, Integer> e : result.entrySet()) {
+      if (max == null || e.getValue() > max.getValue())
+        max = e;
+    }
+
+    Menu.pausaTeclado(new Scanner(System.in));
+    return max.getKey();
   }
 
   // #endregion
